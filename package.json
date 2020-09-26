@@ -4,7 +4,8 @@
   "description": "Programa para desktops que permite que usuários agreguem dados provindos de inversores de diversos campis da UTFPT.",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,9 @@
     "@grpc/proto-loader": "^0.5.5",
     "google-protobuf": "^3.13.0",
     "grpc": "^1.24.3"
+  },
+  "devDependencies": {
+    "electron": "^10.1.2",
+    "electron-rebuild": "^2.0.3"
   }
 }
