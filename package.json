@@ -1,0 +1,28 @@
+{
+  "name": "agregador-dados-inversores",
+  "version": "1.0.0",
+  "description": "Programa para desktops que permite que usuários agreguem dados provindos de inversores de diversos campis da UTFPT.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gu-ramosp/Agregador-Dados-Inversores.git"
+  },
+  "keywords": [
+    "inversores",
+    "agregador"
+  ],
+  "author": "Gustavo Ramos Pereira, Andreas Anael Pereira Gomes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gu-ramosp/Agregador-Dados-Inversores/issues"
+  },
+  "homepage": "https://github.com/gu-ramosp/Agregador-Dados-Inversores#readme",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.5",
+    "google-protobuf": "^3.13.0",
+    "grpc": "^1.24.3"
+  }
+}
