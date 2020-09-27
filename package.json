@@ -2,7 +2,7 @@
   "name": "agregador-dados-inversores",
   "version": "1.0.0",
   "description": "Programa para desktops que permite que usuários agreguem dados provindos de inversores de diversos campis da UTFPT.",
-  "main": "main.js",
+  "main": "electron-src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."

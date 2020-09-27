@@ -1,28 +1,37 @@
 const { app, BrowserWindow } = require('electron')
-const lala = require("./cliente_teste.js")
+// const cliente = require(".\\electron-pages\\electrcliente_teste.js")
+const cp  = require('child_process')
+const { stdout, stderr } = require('process')
 
 function createWindow () {
+
 
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
     }
   })
 
+  const ls = cp.spawn('python', ['./backend/agregador_server.py'])
+  ls.stdout.on('data', stdout =>{console.log(stdout.toString())})
+  ls.stderr.on('data', stderr=>{console.log(stderr.toString())})
+  ls.on('close', code =>{})
+
   // and load the index.html of the app.
-  win.loadFile('index.html')
+  win.loadFile('./index.html')
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
