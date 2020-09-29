@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service Aggregation {
+    rpc MakeAggregation(AggregationRequest) returns (AggregationResponse);
+}
+
+message AggregationRequest{
+    string req = 1;
+}
+
+message AggregationResponse{
+    string resposta = 1;
+}

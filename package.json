@@ -1,33 +1,61 @@
 {
-  "name": "agregador-dados-inversores",
+  "name": "my-app",
+  "productName": "my-app",
   "version": "1.0.0",
-  "description": "Programa para desktops que permite que usuários agreguem dados provindos de inversores de diversos campis da UTFPT.",
-  "main": "electron-src/main.js",
+  "description": "My Electron application description",
+  "main": "src/electron/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gu-ramosp/Agregador-Dados-Inversores.git"
+  "keywords": [],
+  "author": {
+    "name": "Gustavo",
+    "email": "gu.ramosp@gmail.com"
   },
-  "keywords": [
-    "inversores",
-    "agregador"
-  ],
-  "author": "Gustavo Ramos Pereira, Andreas Anael Pereira Gomes",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gu-ramosp/Agregador-Dados-Inversores/issues"
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "my_app"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   },
-  "homepage": "https://github.com/gu-ramosp/Agregador-Dados-Inversores#readme",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.5",
+    "electron-squirrel-startup": "^1.0.0",
     "google-protobuf": "^3.13.0",
     "grpc": "^1.24.3"
   },
   "devDependencies": {
-    "electron": "^10.1.2",
-    "electron-rebuild": "^2.0.3"
+    "@electron-forge/cli": "^6.0.0-beta.53",
+    "@electron-forge/maker-deb": "^6.0.0-beta.53",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.53",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.53",
+    "@electron-forge/maker-zip": "^6.0.0-beta.53",
+    "electron": "10.1.3"
   }
 }

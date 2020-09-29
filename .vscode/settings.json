@@ -1,0 +1,10 @@
+{
+    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/venv":true,
+        "package-lock.json":true, 
+        "**/build": true,
+        "**/__pycache__":true  
+    },
+}
