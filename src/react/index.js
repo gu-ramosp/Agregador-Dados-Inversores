@@ -1,5 +1,21 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/App'
+import React, {Component} from 'react';
+import StartPage from './componentes/startPage'
+import {HashRouter as Router, Route} from 'react-router-dom'
+// import  App from "./App";
 
-ReactDOM.render(<App></App>,document.getElementById("app"))
+
+class App extends Component{
+    
+    render(){
+        return(
+            <Router>               
+                 <StartPage></StartPage>
+            </Router> 
+        ) 
+    }
+}
+
+
+
+ReactDOM.render(<App/>,document.getElementById("app"))

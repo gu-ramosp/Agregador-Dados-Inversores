@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const grpc_client = require('./grpc-client')
 const { stdout, stderr } = require('process');
@@ -11,17 +11,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
-console.log(__dirname)
 
-var exe_path = __dirname + "/../python-backend/dist/agregador_server.exe"
-child.execFile(exe_path, function(err, data) {
-    if(err){
-       console.error(err);
-       return;
-    }
-
-    console.log(data.toString());
-});
 
 // cp.exec(".\\agregador_server.exe", (err, stdout, stderr) =>{
 //   console.log(stdout)
@@ -33,14 +23,29 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+    }
   });
 
-  grpc_client.main() 
+  var exe_path = __dirname + "/../python-backend/dist/agregador_server.exe"
+  child.execFile(exe_path, function(err, data) {
+      if(err){
+         console.error(err);
+         return;
+      }
+      console.log(data.toString());
+  });
+  
 
   // and load the index.html of the app.
   // mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.loadURL("http://localhost:8080")
 
+  ipcMain.on("help", (events,arg)=>{
+    console.log(arg)
+    grpc_client.main() 
+  })
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
