@@ -92,3 +92,5 @@ typings/
 
 # Electron-Forge
 out/
+src/react/dist/index.html
+src/react/dist/index_bundle.js

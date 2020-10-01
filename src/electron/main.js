@@ -1,34 +1,27 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-const grpc_client = require('./grpc-client')
-const { stdout, stderr } = require('process');
-
-// const cp = require("child_process");
-var child = require('child_process');
+const {app, BrowserWindow, ipcMain } = require('electron');
+const {stdout, stderr } = require('process');
+const  path = require('path');
+const  grpc_client = require('./grpc-client')
+const  isDev = require("electron-is-dev")
+const  child = require('child_process');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+// eslint-disable-line global-require
+if (require('electron-squirrel-startup')) { 
   app.quit();
 }
-
-
-
-// cp.exec(".\\agregador_server.exe", (err, stdout, stderr) =>{
-//   console.log(stdout)
-// })
-
 
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
     }
   });
 
-  var exe_path = __dirname + "/../python-backend/dist/agregador_server.exe"
+  var exe_path = `${__dirname}/../python-backend/dist/agregador_server.exe`
   child.execFile(exe_path, function(err, data) {
       if(err){
          console.error(err);
@@ -40,7 +33,9 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   // mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  mainWindow.loadURL("http://localhost:8080")
+  mainWindow.loadURL(
+    isDev?"http://localhost:8080":`${__dirname}/../react/dist/index.html`
+  )
 
   ipcMain.on("help", (events,arg)=>{
     console.log(arg)

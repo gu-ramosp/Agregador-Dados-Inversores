@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './startPage.css'
 const { ipcRenderer } = window.require("electron");
-
+import {Link} from 'react-router-dom'
 
 class StartPage extends Component{
 
@@ -38,9 +38,11 @@ class StartPage extends Component{
                 </div>
                 <footer id="progress-btn">
                     <h2>VAI</h2>
-                    <button onClick={this.nextPage}>
-                        Avançar
-                    </button>
+                    <Link to="/menu">
+                        <button onClick={this.nextPage}>
+                            Avançar
+                        </button>
+                    </Link>
                 </footer>
             </div>
         ) 
