@@ -2,6 +2,7 @@
 **/__pycache__/
 **/build/
 package-lock.json
+/dist
 # Logs
 
 logs

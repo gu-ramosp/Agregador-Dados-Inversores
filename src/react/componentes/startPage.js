@@ -3,15 +3,20 @@ import './startPage.css'
 const { ipcRenderer } = window.require("electron");
 import {Link} from 'react-router-dom'
 
+ipcRenderer.on("help2", (event, arg) => {
+    console.log(arg)
+})
+
 class StartPage extends Component{
 
     nextPage = (e) => {
         console.log("avançando página para página de menu")
-        ipcRenderer.send("help", "help")
     }
 
     mandaInfoFTP = (e) =>{
         console.log("mandando FPT info")
+        ipcRenderer.send("help", "argumentos python")
+        
     }
 
     mandFilesPath = (e) =>{
@@ -26,13 +31,13 @@ class StartPage extends Component{
                 </header>
                 <div  id="option-ftp">
                     <h2>MENU 1</h2>
-                    <button onClick={this.fazAlgo}>
+                    <button onClick={this.mandaInfoFTP}>
                         Arquivo local
                     </button>
                 </div>
                 <div id="option-file">
                     <h2 >MENU 2</h2>
-                    <button onClick={this.fazAlgo}>
+                    <button onClick={this.mandaInfoFTP}>
                         FTP
                     </button>
                 </div>

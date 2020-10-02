@@ -12,12 +12,20 @@ var packageDefinition = protoLoader.loadSync(
     });
 var hello_proto = grpc.loadPackageDefinition(packageDefinition);
 
-function main() {
+function main(request) {
   var client = new hello_proto.Aggregation('localhost:50051', grpc.credentials.createInsecure());
 
-  client.MakeAggregation({req:"jdkljf"}, function(err, response) {
+  console.log(request)
+
+  client.MakeAggregation(request, (err, response)=> {
     console.log('Greeting:', response);
+    this.help = response
+
   });
+  console.log('Essa merda é assincrona mesmo')
+
+  return  this.help
+
 }
 
 module.exports.main = main;

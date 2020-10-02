@@ -21,7 +21,7 @@ const createWindow = () => {
     }
   });
 
-  var exe_path = `${__dirname}/../python-backend/dist/agregador_server.exe`
+  var exe_path = __dirname + "/../python-backend/dist/agregador_server.exe"
   child.execFile(exe_path, function(err, data) {
       if(err){
          console.error(err);
@@ -34,12 +34,12 @@ const createWindow = () => {
   // and load the index.html of the app.
   // mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.loadURL(
-    isDev?"http://localhost:8080":`${__dirname}/../react/dist/index.html`
-  )
+    isDev?"http://localhost:8080":__dirname+"/../react/dist/index.html")
 
-  ipcMain.on("help", (events,arg)=>{
-    console.log(arg)
-    grpc_client.main() 
+  ipcMain.on("help", (event,arg)=>{
+    var algo = grpc_client.main(arg)
+    console.log(algo)
+    event.reply('help2',algo )
   })
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
