@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0f\x61gregador.proto\"!\n\x12\x41ggregationRequest\x12\x0b\n\x03req\x18\x01 \x01(\t\"\'\n\x13\x41ggregationResponse\x12\x10\n\x08resposta\x18\x01 \x01(\t2K\n\x0b\x41ggregation\x12<\n\x0fMakeAggregation\x12\x13.AggregationRequest\x1a\x14.AggregationResponseb\x06proto3'
+  serialized_pb=b'\n\x0f\x61gregador.proto\"!\n\x12\x41ggregationRequest\x12\x0b\n\x03req\x18\x01 \x01(\t\"\'\n\x13\x41ggregationResponse\x12\x10\n\x08resposta\x18\x01 \x01(\t2\xc2\x01\n\x0b\x41ggregation\x12:\n\rSendParamsFTP\x12\x13.AggregationRequest\x1a\x14.AggregationResponse\x12\x39\n\x0cSendDataPath\x12\x13.AggregationRequest\x1a\x14.AggregationResponse\x12<\n\x0fMakeAggregation\x12\x13.AggregationRequest\x1a\x14.AggregationResponseb\x06proto3'
 )
 
 
@@ -115,13 +115,33 @@ _AGGREGATION = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=95,
-  serialized_end=170,
+  serialized_start=96,
+  serialized_end=290,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='SendParamsFTP',
+    full_name='Aggregation.SendParamsFTP',
+    index=0,
+    containing_service=None,
+    input_type=_AGGREGATIONREQUEST,
+    output_type=_AGGREGATIONRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SendDataPath',
+    full_name='Aggregation.SendDataPath',
+    index=1,
+    containing_service=None,
+    input_type=_AGGREGATIONREQUEST,
+    output_type=_AGGREGATIONRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
   _descriptor.MethodDescriptor(
     name='MakeAggregation',
     full_name='Aggregation.MakeAggregation',
-    index=0,
+    index=2,
     containing_service=None,
     input_type=_AGGREGATIONREQUEST,
     output_type=_AGGREGATIONRESPONSE,

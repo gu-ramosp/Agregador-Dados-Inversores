@@ -10,7 +10,7 @@ html{
     margin: 0;
     display: grid;
     grid-template-columns: 50% auto;
-    grid-template-rows: 15% 60% auto;
+    grid-template-rows: 15% auto 12%;
     grid-template-areas: "header header"
                          "option-ftp   option-file" 
                          "progress-btn progress-btn";
@@ -30,12 +30,31 @@ html{
 
 #progress-btn{
     margin: 0;
-    background-color: greenyellow;
     grid-area: progress-btn;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-header{
-    margin: 0;
-    background-color: red;
+button{
+    margin: 0em;
+}
+
+#header{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    height: 15%;
     grid-area: header;
+
+}
+
+a{
+    text-decoration: none;
+    margin-left: 4em;
+    margin-right: 4em;
+}
+
+#graficos-btn{
+    width: 19em;
 }

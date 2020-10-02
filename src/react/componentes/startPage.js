@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import './startPage.css'
 const { ipcRenderer } = window.require("electron");
 import {Link} from 'react-router-dom'
+import { Button } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import AppBar from '@material-ui/core/AppBar';
 
-ipcRenderer.on("help2", (event, arg) => {
-    console.log(arg)
-})
 
 class StartPage extends Component{
 
@@ -26,9 +27,9 @@ class StartPage extends Component{
     render(){
         return(
             <div className="body">
-                <header id="header">
-                    <h1>Escolha o lugar de onde deseja-se obter os dados para agregação</h1>
-                </header>
+                <AppBar id="header">
+                    <h2>Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
+                </AppBar>
                 <div  id="option-ftp">
                     <h2>MENU 1</h2>
                     <button onClick={this.mandaInfoFTP}>
@@ -42,23 +43,26 @@ class StartPage extends Component{
                     </button>
                 </div>
                 <footer id="progress-btn">
-                    <h2>VAI</h2>
                     <Link to="/menu">
-                        <button onClick={this.nextPage}>
+                        <Button variant="contained"   color="primary">
                             Avançar para agregações
-                        </button>
+                        </Button>
                     </Link>
+                    <h2>OU</h2>
                     <Link to="/graficos">
-                        <button>
+                        <Button variant="contained"  id="graficos-btn" color="primary">
                             Gráficos
-                        </button>
+                        </Button>
                     </Link>
                 </footer>
             </div>
         ) 
     }
-
-    
 }
+
+
+ipcRenderer.on("help2", (event, arg) => {
+    console.log(arg)
+})
 
 export default StartPage

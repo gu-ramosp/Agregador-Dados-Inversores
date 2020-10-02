@@ -17,7 +17,7 @@ function main(request) {
 
   console.log(request)
 
-  client.MakeAggregation(request, (err, response)=> {
+  client.SendParamsFTP(request, (err, response)=> {
     console.log('Greeting:', response);
     this.help = response
 

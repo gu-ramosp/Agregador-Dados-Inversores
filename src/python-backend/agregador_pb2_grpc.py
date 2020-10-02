@@ -10,9 +10,20 @@ class AggregationStub(object):
 
     def __init__(self, channel):
         """Constructor.
+
         Args:
             channel: A grpc.Channel.
         """
+        self.SendParamsFTP = channel.unary_unary(
+                '/Aggregation/SendParamsFTP',
+                request_serializer=agregador__pb2.AggregationRequest.SerializeToString,
+                response_deserializer=agregador__pb2.AggregationResponse.FromString,
+                )
+        self.SendDataPath = channel.unary_unary(
+                '/Aggregation/SendDataPath',
+                request_serializer=agregador__pb2.AggregationRequest.SerializeToString,
+                response_deserializer=agregador__pb2.AggregationResponse.FromString,
+                )
         self.MakeAggregation = channel.unary_unary(
                 '/Aggregation/MakeAggregation',
                 request_serializer=agregador__pb2.AggregationRequest.SerializeToString,
@@ -23,6 +34,18 @@ class AggregationStub(object):
 class AggregationServicer(object):
     """Missing associated documentation comment in .proto file."""
 
+    def SendParamsFTP(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SendDataPath(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def MakeAggregation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -32,6 +55,16 @@ class AggregationServicer(object):
 
 def add_AggregationServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'SendParamsFTP': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendParamsFTP,
+                    request_deserializer=agregador__pb2.AggregationRequest.FromString,
+                    response_serializer=agregador__pb2.AggregationResponse.SerializeToString,
+            ),
+            'SendDataPath': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendDataPath,
+                    request_deserializer=agregador__pb2.AggregationRequest.FromString,
+                    response_serializer=agregador__pb2.AggregationResponse.SerializeToString,
+            ),
             'MakeAggregation': grpc.unary_unary_rpc_method_handler(
                     servicer.MakeAggregation,
                     request_deserializer=agregador__pb2.AggregationRequest.FromString,
@@ -46,6 +79,40 @@ def add_AggregationServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class Aggregation(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def SendParamsFTP(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Aggregation/SendParamsFTP',
+            agregador__pb2.AggregationRequest.SerializeToString,
+            agregador__pb2.AggregationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendDataPath(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Aggregation/SendDataPath',
+            agregador__pb2.AggregationRequest.SerializeToString,
+            agregador__pb2.AggregationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def MakeAggregation(request,
