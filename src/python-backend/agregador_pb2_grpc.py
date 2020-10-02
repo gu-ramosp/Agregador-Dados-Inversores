@@ -16,13 +16,13 @@ class AggregationStub(object):
         """
         self.SendParamsFTP = channel.unary_unary(
                 '/Aggregation/SendParamsFTP',
-                request_serializer=agregador__pb2.AggregationRequest.SerializeToString,
-                response_deserializer=agregador__pb2.AggregationResponse.FromString,
+                request_serializer=agregador__pb2.simpleStringRequest.SerializeToString,
+                response_deserializer=agregador__pb2.simpleStringResponse.FromString,
                 )
         self.SendDataPath = channel.unary_unary(
                 '/Aggregation/SendDataPath',
-                request_serializer=agregador__pb2.AggregationRequest.SerializeToString,
-                response_deserializer=agregador__pb2.AggregationResponse.FromString,
+                request_serializer=agregador__pb2.simpleStringRequest.SerializeToString,
+                response_deserializer=agregador__pb2.simpleStringResponse.FromString,
                 )
         self.MakeAggregation = channel.unary_unary(
                 '/Aggregation/MakeAggregation',
@@ -57,13 +57,13 @@ def add_AggregationServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SendParamsFTP': grpc.unary_unary_rpc_method_handler(
                     servicer.SendParamsFTP,
-                    request_deserializer=agregador__pb2.AggregationRequest.FromString,
-                    response_serializer=agregador__pb2.AggregationResponse.SerializeToString,
+                    request_deserializer=agregador__pb2.simpleStringRequest.FromString,
+                    response_serializer=agregador__pb2.simpleStringResponse.SerializeToString,
             ),
             'SendDataPath': grpc.unary_unary_rpc_method_handler(
                     servicer.SendDataPath,
-                    request_deserializer=agregador__pb2.AggregationRequest.FromString,
-                    response_serializer=agregador__pb2.AggregationResponse.SerializeToString,
+                    request_deserializer=agregador__pb2.simpleStringRequest.FromString,
+                    response_serializer=agregador__pb2.simpleStringResponse.SerializeToString,
             ),
             'MakeAggregation': grpc.unary_unary_rpc_method_handler(
                     servicer.MakeAggregation,
@@ -92,8 +92,8 @@ class Aggregation(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Aggregation/SendParamsFTP',
-            agregador__pb2.AggregationRequest.SerializeToString,
-            agregador__pb2.AggregationResponse.FromString,
+            agregador__pb2.simpleStringRequest.SerializeToString,
+            agregador__pb2.simpleStringResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -109,8 +109,8 @@ class Aggregation(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Aggregation/SendDataPath',
-            agregador__pb2.AggregationRequest.SerializeToString,
-            agregador__pb2.AggregationResponse.FromString,
+            agregador__pb2.simpleStringRequest.SerializeToString,
+            agregador__pb2.simpleStringResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

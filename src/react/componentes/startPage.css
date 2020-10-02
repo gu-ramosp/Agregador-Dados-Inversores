@@ -3,6 +3,17 @@ html{
     width: 100%;
 }
 
+a{
+    text-decoration: none;
+    margin-left: 4em;
+    margin-right: 4em;
+}
+
+h2{
+    text-align: center;
+}
+
+
 .body{
     height: 100%;
     width: 100%;
@@ -11,34 +22,14 @@ html{
     display: grid;
     grid-template-columns: 50% auto;
     grid-template-rows: 15% auto 12%;
+    grid-gap: em; /* ADDED */
     grid-template-areas: "header header"
                          "option-ftp   option-file" 
                          "progress-btn progress-btn";
 }
 
-#option-ftp{
-   margin: 0;
-   background-color:blue; 
-   grid-area: option-ftp;
-}
 
-#option-file{
-    margin: 0;
-    background-color: blueviolet;
-    grid-area: option-file;
-}
 
-#progress-btn{
-    margin: 0;
-    grid-area: progress-btn;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-button{
-    margin: 0em;
-}
 
 #header{
     display: flex;
@@ -49,11 +40,38 @@ button{
 
 }
 
-a{
-    text-decoration: none;
-    margin-left: 4em;
-    margin-right: 4em;
+.header-menu{
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
+
+#option-ftp{
+   
+   /* justify-content: space-around;
+   align-content: center; */
+   grid-area: option-ftp;
+   background-color: aqua;
+}
+
+#option-file{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    grid-area: option-file;
+    align-items: center;
+    background-color: aquamarine;
+}
+
+#progress-btn{
+    margin: 0;
+    grid-area: progress-btn;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
 
 #graficos-btn{
     width: 19em;

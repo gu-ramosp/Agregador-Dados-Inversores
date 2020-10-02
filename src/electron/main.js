@@ -34,13 +34,17 @@ child.exec(exe_path, function(err, data) {
     console.log(data.toString());
 });
 
-ipcMain.on("help", (event,arg)=>{
-  var algo = grpc_client.main(arg)
-  console.log(algo)
+//TODO: esperar de forna sincrona
+ipcMain.on("getDirPath", (event,arg)=>{
   dialog.showOpenDialog({ properties: ['openDirectory'] }).then(result=>{
-    event.reply('help2',result )
+    console.log(result.filePaths[0].toString())
+    var path = result.filePaths[0].toString()
+    var confirm = grpc_client.SendDataPath(path)
+    event.reply('dirPathResult',result )
   })
 })
+
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -50,6 +54,7 @@ app.on('ready', createWindow);
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();

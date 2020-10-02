@@ -1,29 +1,31 @@
 import grpc 
 import concurrent
 from concurrent import futures
-
 import agregador_pb2
 import agregador_pb2_grpc
 
 class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
+    def SendParamsFTP(self, request, context):
+        print("Dentro SendParamsFTP")
+        print(request.req)
+        response = agregador_pb2.AggregationResponse()
+        response.resposta = "Chamou SendParamsFTP "
+        return response
+
+    def SendDataPath(self, request, context):
+        print("Dentro SendDataPath")
+        print(request.req)
+        print(request)
+        response = agregador_pb2.AggregationResponse()
+        response.resposta = "Chamou SendDataPath "
+        return response
+    
     def MakeAggregation(self, request, context):
         print("we got something")
         response = agregador_pb2.AggregationResponse()
         response.resposta = "Sayaka: hey hey hey "
         return response
 
-    def SendParamsFTP(self, request, context):
-        print("Dentro SendParamsFTP")
-        response = agregador_pb2.AggregationResponse()
-        response.resposta = "Chamou SendParamsFTP "
-        return response
-
-
-    def SendDataPath(self, request, context):
-        print("Dentro SendDataPath")
-        response = agregador_pb2.AggregationResponse()
-        response.resposta = "Chamou SendDataPath "
-        return response
        
 
 def main():
