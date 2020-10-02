@@ -1,0 +1,41 @@
+.other-body{
+    height: 100%;
+    width: 100%;
+    
+    margin: 0;
+    display: grid;
+    grid-template-columns: 40% auto;
+    grid-template-rows: 15% 15%  60% 15%;
+    grid-template-areas: "tech-type-menu  tech-type-menu"
+                         "data-selector   data-selector" 
+                         "var-options     agrr-options"
+                         "aggr-footer     aggr-footer";
+}
+
+.tech-type-menu{
+    background-color: aqua;
+    grid-area: tech-type-menu;
+}
+
+.data-selector{
+    background-color: blue;
+    grid-area:data-selector;
+}
+
+.var-options{
+    background-color: blueviolet;
+    grid-area:var-options;
+}
+
+.agrr-options{
+    background-color: cadetblue;
+    grid-area:agrr-options;
+}
+
+.aggr-footer{
+    width: 100%;
+    background-color: chartreuse;
+    grid-area:aggr-footer;
+}
+
+

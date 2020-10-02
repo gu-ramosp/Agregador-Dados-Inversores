@@ -45,7 +45,12 @@ class StartPage extends Component{
                     <h2>VAI</h2>
                     <Link to="/menu">
                         <button onClick={this.nextPage}>
-                            Avançar
+                            Avançar para agregações
+                        </button>
+                    </Link>
+                    <Link to="/graficos">
+                        <button>
+                            Gráficos
                         </button>
                     </Link>
                 </footer>

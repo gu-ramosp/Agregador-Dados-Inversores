@@ -1,7 +1,10 @@
 syntax = "proto3";
 
 service Aggregation {
+    rpc SendParamsFTP(AggregationRequest) returns (AggregationResponse);
+    rpc SendDataPath(AggregationRequest) returns (AggregationResponse);
     rpc MakeAggregation(AggregationRequest) returns (AggregationResponse);
+
 }
 
 message AggregationRequest{
