@@ -1,32 +1,35 @@
-import React, {Component} from 'react';
+import React, {Component,useEffect} from 'react';
 import './startPage.css'
 const { ipcRenderer } = window.require("electron");
 import {Link} from 'react-router-dom'
-import { Button } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Button, Input } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
 
 
 class StartPage extends Component{
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            desabilitado: true,
-            btnGraficos:"/",
-            btnMenuAggr:"/"
-        };
-      }
+    state = {
+        desabilitado: true,
+        btnGraficos:"/",
+        btnMenuAggr:"/",
+        host: '',
+        porta: '21',
+        usuario: '',
+        senha :'',
+    };
+
 
     render(){
+        const {host,porta,usuario,senha } = this.state
+        const values = {host,porta,usuario,senha }
+
         return(
             <div className="body">
 
                 <AppBar id="header">
-                    <h2 className="header-menu">Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
+                    <h2 >Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
                 </AppBar>
 
                 <div  id="option-file">
@@ -37,10 +40,20 @@ class StartPage extends Component{
                 </div>
                 <hr></hr>
                 <div id="option-ftp">
-                    <h2 >Servidor FPT</h2>
-                    <button onClick={this.mandaInfoFTP}>
+                    <h2 className="header-menu">Servidor FTP</h2>
+                    <form  noValidate autoComplete="off">
+                        <TextField  style={{margin:"0.25em"}} className="inputF" label="Host"  
+                            variant="outlined"  onChange={this.handleChange('host')} defaultValue={values.host}/>
+                        <TextField  style={{margin:"0.25em"}} className="inputF" label="Porta"
+                            variant="outlined"  onChange={this.handleChange('porta')} defaultValue={values.porta} />
+                        <TextField style={{margin:"0.25em"}} className="inputF" label="Usuário" 
+                            variant="outlined"  onChange={this.handleChange('usuario')} defaultValue={values.usuario} />
+                        <TextField style={{margin:"0.25em"}} className="inputF" label="Senha" 
+                            variant="outlined"  onChange={this.handleChange('senha')} defaultValue={values.senha}  />
+                    </form>
+                    <Button  onClick={this.mandaInfoFTP} variant="contained"  id="graficos-btn" color="primary">
                         Confirmar
-                    </button>
+                    </Button>
                 </div>
 
                 <Paper id="progress-btn" elevation={24}>
@@ -61,13 +74,17 @@ class StartPage extends Component{
         ) 
     }
 
+    handleChange = input => e => {this.setState({[input]: e.target.value})}
+
     mandaInfoFTP = (e) =>{
+        const {host,porta,usuario,senha } = this.state
+        const values = {host,porta,usuario,senha }
+
+        ipcRenderer.send("sendInfoFTP", values)
         console.log("mandando FPT info")        
         this.state.btnGraficos = "/graficos"
         this.state.btnMenuAggr = "/menu"
-        this.state.desabilitado = false
         console.log(this.state)
-
     }
 
     mandaFilesPath = (e) =>{
@@ -75,16 +92,19 @@ class StartPage extends Component{
         console.log("mandando file path")
         this.state.btnGraficos = "/graficos"
         this.state.btnMenuAggr = "/menu"
-        this.state.desabilitado = false
         console.log(this.state)
-
     }
+
+   dirPathRes =  ipcRenderer.on("dirPathResult", (event, arg) => {
+        console.log("Resultado do python dataPAth")
+        console.log(arg)
+        this.setState({desabilitado: false})
+    })
+
+    sendInfoFTP_Res =  ipcRenderer.on("sendInfoFTP_Result", (event, arg) => {
+        console.log("sendInfoFTP_Result")
+        this.setState({desabilitado: false})
+    })
 }
-
-
-ipcRenderer.on("dirPathResult", (event, arg) => {
-    console.log("Resultado do python dataPAth")
-    console.log(arg)
-})
 
 export default StartPage

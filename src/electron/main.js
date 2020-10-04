@@ -44,6 +44,10 @@ ipcMain.on("getDirPath", (event,arg)=>{
   })
 })
 
+ipcMain.on("sendInfoFTP", (event, arg)=>{
+  var confirm = grpc_client.SendParamsFTP(arg)
+  event.reply('sendInfoFTP_Result', confirm )
+})
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

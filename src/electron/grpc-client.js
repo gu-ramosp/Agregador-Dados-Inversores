@@ -17,13 +17,14 @@ var client = new hello_proto.Aggregation('localhost:50051', grpc.credentials.cre
 
 function SendDataPath(request){
 
-  client.SendDataPath({req:request}, (err, response)=> {
+  client.SendDataPath(request, (err, response)=> {
+    console.log("request sendo enviada", request)
     console.log('SendDataPath_cli:', response);
-    this.help = response
+    this.response = response
   });
   
   console.log('Essa merda é assincrona mesmo')
-  return  this.help
+  return  this.response
 }
 
 
