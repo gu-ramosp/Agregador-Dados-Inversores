@@ -18,6 +18,34 @@ class StartPage extends Component{
         porta: '21',
         usuario: '',
         senha :'',
+        inversores_vars : [
+            {    
+                timestamp: 'null',
+                vdc: '45',
+                idc: '10',
+                vac: '13',
+                iac: '48',
+                freq: '41',
+                pac: '41',
+                ene: '42',
+                whs: 'dv4',
+                mod: '2',
+                data:'kls'
+            },
+            {    
+                timestamp: 'hey',
+                vdc: 's',
+                idc: '10',
+                vac: '13',
+                iac: '48',
+                freq: 'd1',
+                pac: '41',
+                ene: '42',
+                whs: 'dv4',
+                mod: '2',
+                data:'kls'
+            }
+        ]
     };
 
 

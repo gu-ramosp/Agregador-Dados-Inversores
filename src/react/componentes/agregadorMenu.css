@@ -1,40 +1,55 @@
 .other-body{
     height: 100%;
     width: 100%;
-    
+    background-color: #c5cae9;
     margin: 0;
     display: grid;
-    grid-template-columns: 40% auto;
-    grid-template-rows: 15% 15%  60% 15%;
-    grid-template-areas: "tech-type-menu  tech-type-menu"
-                         "data-selector   data-selector" 
-                         "var-options     agrr-options"
-                         "aggr-footer     aggr-footer";
+    grid-template-rows: 10% auto auto 60% auto;
+    grid-template-areas: "header" 
+                        "data-selector  "
+                         "tech-type-menu  " 
+                         "var-options     "
+                         "aggr-footer     ";
 }
 
-.tech-type-menu{
-    background-color: aqua;
-    grid-area: tech-type-menu;
+#header{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    height: 15%;
+    grid-area: header;
 }
 
 .data-selector{
-    background-color: blue;
+    background-color: white;
     grid-area:data-selector;
 }
 
+.tech-type-menu{
+    background-color: lavender;
+    grid-area: tech-type-menu;
+}
+
+
+
 .var-options{
-    background-color: blueviolet;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em;
+    justify-content: space-around;
+    align-content: center;
     grid-area:var-options;
 }
 
-.agrr-options{
-    background-color: cadetblue;
-    grid-area:agrr-options;
-}
 
-.aggr-footer{
+#aggr-footer{
+    position: sticky;
     width: 100%;
-    background-color: chartreuse;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e8eaf6  ;
     grid-area:aggr-footer;
 }
 
