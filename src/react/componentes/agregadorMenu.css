@@ -21,12 +21,18 @@
 }
 
 .data-selector{
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
     background-color: white;
     grid-area:data-selector;
 }
 
 .tech-type-menu{
-    background-color: lavender;
+  
+    background-color: white;
+    background-color: white;
     grid-area: tech-type-menu;
 }
 
@@ -54,3 +60,13 @@
 }
 
 
+#interno{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.date-selector {
+    margin: 2em;
+}

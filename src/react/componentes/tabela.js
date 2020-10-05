@@ -8,7 +8,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
-
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles({
     table: {
@@ -19,15 +20,19 @@ const useStyles = makeStyles({
   
 
 function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+  return { name };
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159,45,6.0,44),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Timestamp'),
+  createData('Tensão DC',),
+  createData('Corrente DC'),
+  createData('Tensão AC'),
+  createData('Corrente AC'),
+  createData('Frequêcia'),
+  createData('Potência AC'),
+  createData('Energia Total'),
+  createData('whs'),
 ];
 
   export default function BasicTable() {
@@ -35,16 +40,13 @@ const rows = [
   
     return (
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.table}  size="small" aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">
-                  Calories
+              <TableCell>Variável a Agregar</TableCell>
+              <TableCell align="center">
+                  Tipo de Agregação
               </TableCell>
-              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -52,14 +54,24 @@ const rows = [
               <TableRow key={row.name}>
                 <TableCell component="th" scope="row">
                 <Checkbox inputProps={{ 'aria-label': 'select all desserts' }}/>
-
                   {row.name}
-
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
+                <TableCell align="center">
+                <TextField 
+                                id="standard-select-currency"
+                                select
+                                variant="outlined"
+                                style={{marginLeft:"5em",marginTop:"0.5em",width:"20em"}}
+                                value={"nulo"}
+                            >
+                                <MenuItem>
+                                    sddfghgfhfgh
+                                </MenuItem>
+                                <MenuItem>
+                                    sddfghgfhfgh
+                                </MenuItem>
+                            </TextField>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
