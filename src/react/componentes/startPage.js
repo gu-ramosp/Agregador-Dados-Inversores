@@ -6,7 +6,7 @@ import { Button, Input } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-
+import {SelectorInput} from "./selectorInput"
 
 class StartPage extends Component{
 
@@ -18,11 +18,11 @@ class StartPage extends Component{
         porta: '21',
         usuario: '',
         senha :'',
-        inversores_vars : [
+        agrr_selections : 
             {    
                 timestamp: 'null',
                 vdc: '45',
-                idc: '10',
+                idc: '',
                 vac: '13',
                 iac: '48',
                 freq: '41',
@@ -31,32 +31,30 @@ class StartPage extends Component{
                 whs: 'dv4',
                 mod: '2',
                 data:'kls'
-            },
-            {    
-                timestamp: 'hey',
-                vdc: 's',
-                idc: '10',
-                vac: '13',
-                iac: '48',
-                freq: 'd1',
-                pac: '41',
-                ene: '42',
-                whs: 'dv4',
-                mod: '2',
-                data:'kls'
             }
-        ]
+        
     };
 
 
+    fun = (event) =>{
+        // var agrr_selections545 = this.state.agrr_selections.idc
+        // const {agrr_selections } = this.state.idc
+        // var e= event.target.value;
+        // this.setState({ agrr_selections: e})
+        var agrr_selections = {...this.state.agrr_selections}
+        agrr_selections.idc = event.target.value;
+        this.setState({agrr_selections})
+        console.log("testando props")
+        console.log(this.state)
+      }
+      
     render(){
         const {host,porta,usuario,senha } = this.state
         const values = {host,porta,usuario,senha }
-
         return(
             <div className="body">
-
-                <AppBar id="header">
+                <SelectorInput changeSelection={this.fun} aggrType={this.state.agrr_selections.idc}></SelectorInput>
+                {/* <AppBar id="header">
                     <h2 >Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
                 </AppBar>
 
@@ -96,7 +94,7 @@ class StartPage extends Component{
                             Gráficos 
                         </Button>
                     </Link>
-                </Paper>
+                </Paper> */}
               
             </div>
         ) 
@@ -133,6 +131,7 @@ class StartPage extends Component{
         console.log("sendInfoFTP_Result")
         this.setState({desabilitado: false})
     })
+
 }
 
 export default StartPage
