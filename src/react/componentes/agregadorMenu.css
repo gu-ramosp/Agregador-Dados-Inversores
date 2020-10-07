@@ -1,7 +1,6 @@
 .other-body{
     height: 100%;
     width: 100%;
-    background-color: #c5cae9;
     margin: 0;
     display: grid;
     grid-template-rows: 10% auto auto 60% auto;
@@ -31,7 +30,6 @@
 
 .tech-type-menu{
   
-    background-color: white;
     background-color: white;
     grid-area: tech-type-menu;
 }

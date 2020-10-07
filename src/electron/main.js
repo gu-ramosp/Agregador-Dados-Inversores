@@ -23,7 +23,6 @@ const createWindow = () => {
   })
 
   mainWindow.loadURL(isDev?"http://localhost:8080":__dirname+"/../react/dist/index.html")
-  mainWindow.webContents.openDevTools();
 }
 
 

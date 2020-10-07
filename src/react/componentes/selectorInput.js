@@ -8,8 +8,9 @@ import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles(() => ({
     formControl: {
-      margin: "8em",
+      margin: "0.5em",
       minWidth: "20em",
+      display:"flex",
     },
     selectEmpty: {
       marginTop: "1em",
@@ -19,11 +20,11 @@ const useStyles = makeStyles(() => ({
 
 
 export function SelectorInput(props){  
-    if(props.aggrType<30){
+    if(props.aggrType == "limited"){
         return   <FormControl variant="outlined" className={useStyles().formControl}>
         <InputLabel >Tipo de Agregação</InputLabel>
         <Select
-     
+          name={props.aggrName}
           value={props.aggrType}
           onChange={props.changeSelection}
           label="Tipo de Agregação"
@@ -34,7 +35,6 @@ export function SelectorInput(props){
           <MenuItem value={"Soma"}>Soma</MenuItem>
           <MenuItem value={"outro"}>Outro</MenuItem>
         </Select>
-        <p>{props.aggrType}</p>
 
       </FormControl>
     }
@@ -42,7 +42,7 @@ export function SelectorInput(props){
         return    <FormControl variant="outlined" className={useStyles().formControl}>
         <InputLabel >Tipo de Agregação</InputLabel>
         <Select
-     
+          name={props.aggrName}
           value={props.aggrType}
           onChange={props.changeSelection}
           label="Tipo de Agregação"
@@ -54,7 +54,6 @@ export function SelectorInput(props){
           <MenuItem value={"mediana"}>Mediana</MenuItem>
           <MenuItem value={"Soma"}>Soma</MenuItem>
         </Select>
-        <p>{props.aggrType}</p>
       </FormControl>
     }
 

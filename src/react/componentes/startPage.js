@@ -7,6 +7,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import {SelectorInput} from "./selectorInput"
+import TableMenu from './tabelaMenu';
+
 
 class StartPage extends Component{
 
@@ -20,9 +22,9 @@ class StartPage extends Component{
         senha :'',
         agrr_selections : 
             {    
-                timestamp: 'null',
-                vdc: '45',
-                idc: '',
+                timestamp: 'limited',
+                vdc: 'full',
+                idc: 'limited',
                 vac: '13',
                 iac: '48',
                 freq: '41',
@@ -36,24 +38,21 @@ class StartPage extends Component{
     };
 
 
-    fun = (event) =>{
-        // var agrr_selections545 = this.state.agrr_selections.idc
-        // const {agrr_selections } = this.state.idc
-        // var e= event.target.value;
-        // this.setState({ agrr_selections: e})
+    changeSelection = (event) =>{
         var agrr_selections = {...this.state.agrr_selections}
-        agrr_selections.idc = event.target.value;
+        agrr_selections[event.target.name] = event.target.value;
         this.setState({agrr_selections})
-        console.log("testando props")
         console.log(this.state)
+        console.log(event)
       }
       
     render(){
         const {host,porta,usuario,senha } = this.state
         const values = {host,porta,usuario,senha }
         return(
-            <div className="body">
-                <SelectorInput changeSelection={this.fun} aggrType={this.state.agrr_selections.idc}></SelectorInput>
+            <div  id="option-ftp"className="body">
+                <TableMenu changeSelection={this.changeSelection} agrr_selections={this.state.agrr_selections}></TableMenu>
+                {/* <SelectorInput changeSelection={this.fun} aggrType={this.state.agrr_selections.idc}></SelectorInput> */}
                 {/* <AppBar id="header">
                     <h2 >Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
                 </AppBar>

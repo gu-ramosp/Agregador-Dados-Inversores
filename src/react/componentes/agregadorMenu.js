@@ -9,7 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import BasicTable from './tabela';
+import TableMenu from './tabelaMenu';
 import { Button, Input } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
@@ -18,6 +18,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 
 class AgregadorMenu extends Component{
+
+
 
     state ={
         age :45,
@@ -82,12 +84,13 @@ class AgregadorMenu extends Component{
                                 </MenuItem>
                             </TextField>
                     </div>
-                      
+                    <Divider></Divider>
+
                 </div>
                
                <div className="var-options">
                    
-                    <BasicTable></BasicTable>
+                    <TableMenu></TableMenu>
                </div>
               
                <Paper id="aggr-footer" elevation={24}>
