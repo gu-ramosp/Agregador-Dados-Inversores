@@ -12,61 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import {SelectorInput} from "./selectorInput"
 
-
-const useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-      margin:0
-    },
-});
-  
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name };
-}
-
-const rows = [
-  createData('Timestamp'),
-  createData('Tensão DC',),
-  createData('Corrente DC'),
-  createData('Tensão AC'),
-  createData('Corrente AC'),
-  createData('Frequêcia'),
-  createData('Potência AC'),
-  createData('Energia Total'),
-  createData('whs'),
-];
-
 class TableMenu extends Component{
-  
-  useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-      margin:0
-    },
-});
-createData(name, calories, fat, carbs, protein) {
-  return { name };
-}
-
-rows = [
-  createData('Timestamp'),
-  createData('Tensão DC',),
-  createData('Corrente DC'),
-  createData('Tensão AC'),
-  createData('Corrente AC'),
-  createData('Frequêcia'),
-  createData('Potência AC'),
-  createData('Energia Total'),
-  createData('whs'),
-];
-
-
-  changeSelection = (e) => {
-    this.props.changeSelection(e)
-  }
-
-
   
   render(){
     const lista = Object.keys(this.props.agrr_selections)
@@ -85,16 +31,31 @@ rows = [
            {Object.keys(this.props.agrr_selections).map((row) => (
             <TableRow key={row}>
               <TableCell component="th" scope="row">
+                <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={row}   onChange={this.toggleCheck}/>
                 {row}
               </TableCell>
-              {/* <TableCell align="center">{this.props.agrr_selections[row]}</TableCell> */}
-            <SelectorInput  changeSelection={this.changeSelection} aggrType={this.props.agrr_selections[row]} aggrName={row}></SelectorInput>
+              <SelectorInput  changeSelection={this.changeSelection} aggrType={this.props.agrr_selections[row]} aggrName={row}></SelectorInput>
             </TableRow>
           ))}
-          </TableBody>
+        </TableBody>
       </Table>
     </TableContainer>
     )
+  }
+
+  useStyles = makeStyles({
+    table: {
+      minWidth: 650,
+      margin:0
+    },
+  });
+  
+  toggleCheck = (e) =>{
+    this.props.toggleCheck(e)
+  }
+
+  changeSelection = (e) => {
+    this.props.changeSelection(e)
   }
 
 }

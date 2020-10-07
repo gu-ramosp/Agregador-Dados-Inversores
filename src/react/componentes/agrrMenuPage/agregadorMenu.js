@@ -1,41 +1,36 @@
 import React, {Component} from 'react';
-import './agregadorMenu.css'
 import {Link} from 'react-router-dom'
-import TextField from '@material-ui/core/TextField';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import { Button, Input,Divider,MenuItem,TextField,AppBar,Paper} from '@material-ui/core';
 import TableMenu from './tabelaMenu';
-import { Button, Input } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import AppBar from '@material-ui/core/AppBar';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+import './agregadorMenu.css'
+
 
 class AgregadorMenu extends Component{
 
-
-
-    state ={
-        age :45,
+    state = {
+        agrr_selections : {    
+            timestamp: 'limited',
+            vdc: 'full',  //Tensão DC
+            idc: 'limited', //Corrente DC
+            vac: '13', // Tensão AC
+            iac: '48', //Corrente AC
+            freq: '41', //Frequêcia
+            pac: '41', //Potência AC
+            ene: '42', //Energia Total
+            whs: 'dv4',
+            mod: '2',
+            data:'kls'
+        },
         tech_type:"CDTE"
-    }
+      }
 
-    handleChange = (event) => {
-        setAge(event.target.value);
-      };
-    
     render(){
         return(
             <div className="other-body">
+
                 <div id="header">
                     <AppBar style={{height:"10%"}}>
-                        <h2 >Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
+                        <h2 >Escolha quais variáveis e tipo de agregação serão realizadas</h2>
                     </AppBar>
                 </div>
               
@@ -48,10 +43,8 @@ class AgregadorMenu extends Component{
                                 type="date"
                                 variant="outlined"
                                 defaultValue="2017-05-24"
-                                InputLabelProps={{
-                                shrink: true,
-                                }}
-                            />
+                                InputLabelProps={{shrink: true,}}
+                    />
                     <TextField
                                 className="date-selector"
                                 id="date"
@@ -59,10 +52,8 @@ class AgregadorMenu extends Component{
                                 type="date"
                                 variant="outlined"
                                 defaultValue="2020-05-24"
-                                InputLabelProps={{
-                                shrink: true,
-                                }}
-                            />
+                                InputLabelProps={{shrink: true,}}
+                    />
                 </div>
 
                 <div className="tech-type-menu">
@@ -73,7 +64,7 @@ class AgregadorMenu extends Component{
                                 id="standard-select-currency"
                                 select
                                 variant="outlined"
-                                style={{marginLeft:"5em",marginTop:"0.5em",width:"20em"}}
+                                style={{marginLeft:"5em",marginTop:"0.5em",width:"20em",marginBottom:"0.5em"}}
                                 value={this.state.tech_type}
                             >
                                 <MenuItem>
@@ -85,12 +76,14 @@ class AgregadorMenu extends Component{
                             </TextField>
                     </div>
                     <Divider></Divider>
-
                 </div>
                
                <div className="var-options">
-                   
-                    <TableMenu></TableMenu>
+                    <TableMenu 
+                        changeSelection={this.changeSelection} 
+                        agrr_selections={this.state.agrr_selections}
+                        toggleCheck={this.toggleCheck} 
+                    />    
                </div>
               
                <Paper id="aggr-footer" elevation={24}>
@@ -101,7 +94,7 @@ class AgregadorMenu extends Component{
                     </Link>
                     <h2>OU</h2>
                     <Link to="/resultados">
-                        <Button variant="contained" id="graficos-btn" color="primary">
+                        <Button variant="contained" id="graficos-btn" color="primary" onClick={this.enviaDados}>
                             Avançar 
                         </Button>
                     </Link>
@@ -111,6 +104,28 @@ class AgregadorMenu extends Component{
         ) 
     }
 
+    enviaDados = () =>{
+ 
+
+    }
+
+    toggleCheck = (e) =>{
+        console.log(e.target.name)
+      }
+
+
+    changeSelection = (event) =>{
+        var agrr_selections = {...this.state.agrr_selections}
+        agrr_selections[event.target.name] = event.target.value;
+        this.setState({agrr_selections})
+        console.log(this.state)
+        console.log(event)
+      }
+      
+
+    handleChange = (event) => {
+        setAge(event.target.value);
+      };
     
 }
 

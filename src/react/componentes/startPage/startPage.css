@@ -22,7 +22,6 @@ h2{
     display: grid;
     grid-template-columns: 50% auto;
     grid-template-rows: 12% auto 12%;
-    grid-gap: em; /* ADDED */
     grid-template-areas: "header header"
                          "option-ftp   option-file" 
                          "progress-btn progress-btn";

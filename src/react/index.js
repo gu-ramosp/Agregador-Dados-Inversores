@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom'
 import React, {Component} from 'react';
 import {HashRouter ,Switch, Route} from 'react-router-dom'
-import StartPage from './componentes/startPage'
-import AgregadorMenu from './componentes/agregadorMenu'
-import AgregadorResultados from './componentes/agregadorResultados'
-import GraficosPage from './componentes/graficosPage'
+import StartPage from './componentes/startPage/startPage'
+import AgregadorMenu from './componentes/agrrMenuPage/agregadorMenu'
+import AgregadorResultados from './componentes/ResultadosPage/agregadorResultados'
+import GraficosPage from './componentes/graficosPage/graficosPage'
 
 class App extends Component{
     

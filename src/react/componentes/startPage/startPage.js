@@ -6,8 +6,6 @@ import { Button, Input } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import {SelectorInput} from "./selectorInput"
-import TableMenu from './tabelaMenu';
 
 
 class StartPage extends Component{
@@ -19,41 +17,18 @@ class StartPage extends Component{
         host: '',
         porta: '21',
         usuario: '',
-        senha :'',
-        agrr_selections : 
-            {    
-                timestamp: 'limited',
-                vdc: 'full',
-                idc: 'limited',
-                vac: '13',
-                iac: '48',
-                freq: '41',
-                pac: '41',
-                ene: '42',
-                whs: 'dv4',
-                mod: '2',
-                data:'kls'
-            }
-        
+        senha :'',  
     };
 
-
-    changeSelection = (event) =>{
-        var agrr_selections = {...this.state.agrr_selections}
-        agrr_selections[event.target.name] = event.target.value;
-        this.setState({agrr_selections})
-        console.log(this.state)
-        console.log(event)
-      }
       
     render(){
         const {host,porta,usuario,senha } = this.state
         const values = {host,porta,usuario,senha }
         return(
-            <div  id="option-ftp"className="body">
-                <TableMenu changeSelection={this.changeSelection} agrr_selections={this.state.agrr_selections}></TableMenu>
+            <div className="body">
+                {/* <TableMenu changeSelection={this.changeSelection} agrr_selections={this.state.agrr_selections}></TableMenu> */}
                 {/* <SelectorInput changeSelection={this.fun} aggrType={this.state.agrr_selections.idc}></SelectorInput> */}
-                {/* <AppBar id="header">
+                <AppBar id="header">
                     <h2 >Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
                 </AppBar>
 
@@ -93,8 +68,7 @@ class StartPage extends Component{
                             Gráficos 
                         </Button>
                     </Link>
-                </Paper> */}
-              
+                </Paper>
             </div>
         ) 
     }
@@ -120,7 +94,7 @@ class StartPage extends Component{
         console.log(this.state)
     }
 
-   dirPathRes =  ipcRenderer.on("dirPathResult", (event, arg) => {
+   dirPath_Res =  ipcRenderer.on("dirPathResult", (event, arg) => {
         console.log("Resultado do python dataPAth")
         console.log(arg)
         this.setState({desabilitado: false})
