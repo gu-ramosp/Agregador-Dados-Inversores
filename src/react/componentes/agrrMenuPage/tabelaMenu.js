@@ -13,9 +13,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {SelectorInput} from "./selectorInput"
 
 class TableMenu extends Component{
-  
+
+
   render(){
-    const lista = Object.keys(this.props.agrr_selections)
     return(
       <TableContainer componnent={Paper}>
       <Table  size="small" aria-label="simple table">
@@ -28,13 +28,13 @@ class TableMenu extends Component{
           </TableRow>
         </TableHead>
         <TableBody>
-           {Object.keys(this.props.agrr_selections).map((row) => (
-            <TableRow key={row}>
+           {this.props.agrr_selections.map((row) => (
+            <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-                <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={row}   onChange={this.toggleCheck}/>
-                {row}
+                <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={row.name}  onChange={this.toggleCheck}/>
+                {row.name}
               </TableCell>
-              <SelectorInput  changeSelection={this.changeSelection} aggrType={this.props.agrr_selections[row]} aggrName={row}></SelectorInput>
+              <SelectorInput  changeSelection={this.changeSelection} aggrType={row.selectorType} aggrName={row.name} disabled={row.disabled}></SelectorInput>
             </TableRow>
           ))}
         </TableBody>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
 import { Button, Input,Divider,MenuItem,TextField,AppBar,Paper} from '@material-ui/core';
+const { ipcRenderer } = window.require("electron");
 import TableMenu from './tabelaMenu';
 import './agregadorMenu.css'
 
@@ -8,22 +9,24 @@ import './agregadorMenu.css'
 class AgregadorMenu extends Component{
 
     state = {
-        agrr_selections : {    
-            timestamp: 'limited',
-            vdc: 'full',  //Tensão DC
-            idc: 'limited', //Corrente DC
-            vac: '13', // Tensão AC
-            iac: '48', //Corrente AC
-            freq: '41', //Frequêcia
-            pac: '41', //Potência AC
-            ene: '42', //Energia Total
-            whs: 'dv4',
-            mod: '2',
-            data:'kls'
-        },
+        agrr_selections : [ 
+            {name:'timestamp',selectorType:'full',disabled:true},
+            {name: 'vdc',selectorType:'limited',disabled:true}, //Tensão DC
+            {name: 'idc',selectorType:'limited',disabled:true},//Corrente DC
+            {name:  'vac', selectorType:'limited',disabled:true}, // Tensão AC
+            {name: 'iac',selectorType:'limited',disabled:true}, //Corrente AC
+            {name:'freq',selectorType:'full',disabled:true}, //Frequêcia
+            {name: 'pac',selectorType:'limited',disabled:true}, //Potência AC
+            {name: 'ene', selectorType:'limited',disabled:true}, //Energia Total
+            {name: 'whs',selectorType:'limited',disabled:true},
+            {name:'mod',selectorType:'limited',disabled:true}
+        ],
+        start_date: "",
+        end_date: "",
+        tech_type: "",
         tech_type:"CDTE"
-      }
-
+    }
+    
     render(){
         return(
             <div className="other-body">
@@ -104,29 +107,41 @@ class AgregadorMenu extends Component{
         ) 
     }
 
-    enviaDados = () =>{
- 
+    handleChange = input => e => {this.setState({[input]: e.target.value})}
 
+    enviaDados = () =>{
+        ipcRenderer.send("makeAggregation", this.state)
     }
 
-    toggleCheck = (e) =>{
-        console.log(e.target.name)
+    toggleCheck = (event) =>{
+        var agrr_selections = this.state.agrr_selections
+        agrr_selections = agrr_selections.map( (selection)=>{
+            if(selection.name == event.target.name){
+                return { name:selection.name, selectorType:selection.selectorType, disabled: !selection.disabled }
+            }
+            else{
+                return { name:selection.name, selectorType:selection.selectorType, disabled: selection.disabled }
+            }
+        })
+        this.setState({agrr_selections})
+        console.log(this.state)
       }
 
 
     changeSelection = (event) =>{
-        var agrr_selections = {...this.state.agrr_selections}
-        agrr_selections[event.target.name] = event.target.value;
+        var agrr_selections = this.state.agrr_selections
+        agrr_selections = agrr_selections.map( (selection)=>{
+            if(selection.name == event.target.name){
+                return { name:selection.name, selectorType:event.target.value, disabled: selection.disabled }
+            }
+            else{
+                return { name:selection.name, selectorType:selection.selectorType, disabled: selection.disabled }
+            }
+        })
         this.setState({agrr_selections})
         console.log(this.state)
-        console.log(event)
       }
       
-
-    handleChange = (event) => {
-        setAge(event.target.value);
-      };
-    
 }
 
 export default AgregadorMenu

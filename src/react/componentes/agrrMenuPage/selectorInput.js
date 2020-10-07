@@ -25,6 +25,7 @@ export function SelectorInput(props){
         return    <FormControl variant="outlined" className={useStyles().formControl}>
                     <InputLabel >Tipo de Agregação</InputLabel>
                     <Select
+                      disabled={props.disabled}
                       name={props.aggrName}
                       value={props.aggrType}
                       onChange={props.changeSelection}
@@ -41,6 +42,7 @@ export function SelectorInput(props){
         return    <FormControl variant="outlined" className={useStyles().formControl}>
                     <InputLabel >Tipo de Agregação</InputLabel>
                     <Select
+                      disabled={props.disabled}
                       name={props.aggrName}
                       value={props.aggrType}
                       onChange={props.changeSelection}

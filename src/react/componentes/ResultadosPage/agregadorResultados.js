@@ -7,7 +7,7 @@ class AgregadorResultados extends Component{
     render(){
         return(
             <div>
-                <Link to="/">
+                <Link to="/menu">
                     <button>
                         voltar inicio
                     </button>

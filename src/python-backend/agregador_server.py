@@ -1,3 +1,4 @@
+#python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. agregador.proto
 import grpc 
 import concurrent
 from concurrent import futures
@@ -100,11 +101,23 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         return response
     
     def MakeAggregation(self, request, context):
-        print("we got something")
-        response = agregador_pb2.AggregationResponse()
-        response.resposta = "Sayaka: hey hey hey "
-        _makeAgregation()
+        print("Make agg")
+        response = agregador_pb2.Agregregation()
+        response.data_inicio = "sdfsdfjkjf"
+
+        # data_inicio="1 djflkjk", 
+        #                                         data_fim="2 astolfo",
+        #                                         vdc = "3 sdsd",
+        #                                         idc = "4 sasd",
+        #                                         vac = "5 sfdd",
+        #                                         iac = "6 sadas",
+        #                                         freq = "7 sdas",
+        #                                         pac = "8 sddfasdj",
+        #                                         ene= "9 sjdlk",
+        #                                         whs = "10 sadds"
+        print(response)
+        # _makeAgregation()
         return response
 
-       
+
 main()

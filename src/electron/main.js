@@ -50,6 +50,16 @@ ipcMain.on("sendInfoFTP", (event, arg)=>{
   event.reply('sendInfoFTP_Result', confirm )
 })
 
+ipcMain.on("makeAggregation", (event, arg)=>{
+
+  grpc_client.client.MakeAggregation(arg, (err, response)=> {
+    console.log('MakeAggregation_cli:', response);
+    console.log("Erro: " + err)
+    event.reply('makeAggregation_Result', response )
+
+  });
+
+})
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

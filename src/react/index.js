@@ -5,6 +5,7 @@ import StartPage from './componentes/startPage/startPage'
 import AgregadorMenu from './componentes/agrrMenuPage/agregadorMenu'
 import AgregadorResultados from './componentes/ResultadosPage/agregadorResultados'
 import GraficosPage from './componentes/graficosPage/graficosPage'
+const { ipcRenderer } = window.require("electron");
 
 class App extends Component{
     
@@ -20,6 +21,13 @@ class App extends Component{
             </HashRouter> 
         ) 
     }
+
+    aggr_results = ipcRenderer.on("makeAggregation_Result", (event, arg) => {
+        console.log("o que eu quero")
+        console.log(arg)
+    })
+    
+    
 }
 
 

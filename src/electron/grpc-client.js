@@ -43,18 +43,26 @@ function SendParamsFTP(request){
 function MakeAggregation(request) {
   console.log(request)
 
-  client.MakeAggregation(request, (err, response)=> {
+ client.MakeAggregation(request, (err, response)=> {
     console.log('MakeAggregation_cli:', response);
     this.aggrResponse = response
+    console.log("Erro:" + err)
+
   });
-  
-  console.log('Essa merda é assincrona mesmo')
-  return  this.aggrResponse
+
+
+ 
+
+  return this.aggrResponse
+
+ 
+
 }
 
 module.exports.SendDataPath = SendDataPath;
 module.exports.SendParamsFTP = SendParamsFTP;
 module.exports.MakeAggregation = MakeAggregation;
+module.exports.client = client;
 
 
 // main();

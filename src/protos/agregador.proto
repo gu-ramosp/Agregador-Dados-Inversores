@@ -3,8 +3,8 @@ syntax = "proto3";
 service Aggregation {
     rpc SendDataPath(simpleStringRequest) returns (simpleStringResponse);
     rpc SendParamsFTP(infoFTP_Request) returns (simpleStringResponse);
-    rpc MakeAggregation(AggregationRequest) returns (AggregationResponse);
-    rpc sendGraphData(simpleStringRequest) returns (AggregationResponse);
+    rpc MakeAggregation(Agregregation) returns (Agregregation);
+    rpc sendGraphData(simpleStringRequest) returns (simpleStringRequest);
 }
 
 message simpleStringRequest{
@@ -22,16 +22,17 @@ message infoFTP_Request{
     string senha = 4;
 }
 
+
 message Agregregation{
-    string key =1;
-    string value=2;
-}
-
-message AggregationRequest{
-    repeated  Agregregation Agregregations = 1;
-}
-
-message AggregationResponse{
-    repeated  Agregregation Agregregations = 1;
+    string data_inicio  = 1;
+    string data_fim =     2;
+    string vdc  =         3;
+    string idc =          4;
+    string vac =          5;
+    string iac =          6;
+    string freq =         7;
+    string pac =          8;
+    string ene =          9;
+    string whs =          10;
 }
 

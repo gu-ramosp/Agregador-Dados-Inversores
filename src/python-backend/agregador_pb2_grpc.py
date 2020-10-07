@@ -26,13 +26,13 @@ class AggregationStub(object):
                 )
         self.MakeAggregation = channel.unary_unary(
                 '/Aggregation/MakeAggregation',
-                request_serializer=agregador__pb2.AggregationRequest.SerializeToString,
-                response_deserializer=agregador__pb2.AggregationResponse.FromString,
+                request_serializer=agregador__pb2.Agregregation.SerializeToString,
+                response_deserializer=agregador__pb2.Agregregation.FromString,
                 )
         self.sendGraphData = channel.unary_unary(
                 '/Aggregation/sendGraphData',
                 request_serializer=agregador__pb2.simpleStringRequest.SerializeToString,
-                response_deserializer=agregador__pb2.AggregationResponse.FromString,
+                response_deserializer=agregador__pb2.simpleStringRequest.FromString,
                 )
 
 
@@ -78,13 +78,13 @@ def add_AggregationServicer_to_server(servicer, server):
             ),
             'MakeAggregation': grpc.unary_unary_rpc_method_handler(
                     servicer.MakeAggregation,
-                    request_deserializer=agregador__pb2.AggregationRequest.FromString,
-                    response_serializer=agregador__pb2.AggregationResponse.SerializeToString,
+                    request_deserializer=agregador__pb2.Agregregation.FromString,
+                    response_serializer=agregador__pb2.Agregregation.SerializeToString,
             ),
             'sendGraphData': grpc.unary_unary_rpc_method_handler(
                     servicer.sendGraphData,
                     request_deserializer=agregador__pb2.simpleStringRequest.FromString,
-                    response_serializer=agregador__pb2.AggregationResponse.SerializeToString,
+                    response_serializer=agregador__pb2.simpleStringRequest.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -142,8 +142,8 @@ class Aggregation(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Aggregation/MakeAggregation',
-            agregador__pb2.AggregationRequest.SerializeToString,
-            agregador__pb2.AggregationResponse.FromString,
+            agregador__pb2.Agregregation.SerializeToString,
+            agregador__pb2.Agregregation.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -160,6 +160,6 @@ class Aggregation(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Aggregation/sendGraphData',
             agregador__pb2.simpleStringRequest.SerializeToString,
-            agregador__pb2.AggregationResponse.FromString,
+            agregador__pb2.simpleStringRequest.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
