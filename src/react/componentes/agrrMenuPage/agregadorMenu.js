@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
-import { Button, Input,Divider,MenuItem,TextField,AppBar,Paper} from '@material-ui/core';
+import { Button, Input,Divider,MenuItem,TextField,AppBar,Paper,makeStyles,FormHelperText,FormControl,Select,InputLabel} from '@material-ui/core';
 const { ipcRenderer } = window.require("electron");
 import TableMenu from './tabelaMenu';
 import './agregadorMenu.css'
@@ -10,21 +10,19 @@ class AgregadorMenu extends Component{
 
     state = {
         agrr_selections : [ 
-            {name:'timestamp',selectorType:'full',disabled:true},
-            {name: 'vdc',selectorType:'limited',disabled:true}, //Tensão DC
-            {name: 'idc',selectorType:'limited',disabled:true},//Corrente DC
-            {name:  'vac', selectorType:'limited',disabled:true}, // Tensão AC
-            {name: 'iac',selectorType:'limited',disabled:true}, //Corrente AC
-            {name:'freq',selectorType:'full',disabled:true}, //Frequêcia
-            {name: 'pac',selectorType:'limited',disabled:true}, //Potência AC
-            {name: 'ene', selectorType:'limited',disabled:true}, //Energia Total
-            {name: 'whs',selectorType:'limited',disabled:true},
-            {name:'mod',selectorType:'limited',disabled:true}
+            {name: 'vdc',selectorType:'limited',disabled:true, aggrType:''}, //Tensão DC
+            {name: 'idc',selectorType:'limited',disabled:true, aggrType:''},//Corrente DC
+            {name:  'vac', selectorType:'limited',disabled:true, aggrType:''}, // Tensão AC
+            {name: 'iac',selectorType:'limited',disabled:true, aggrType:''}, //Corrente AC
+            {name:'freq',selectorType:'full',disabled:true, aggrType:''}, //Frequêcia
+            {name: 'pac',selectorType:'limited',disabled:true, aggrType:''}, //Potência AC
+            {name: 'ene', selectorType:'limited',disabled:true, aggrType:''}, //Energia Total
+            {name: 'whs',selectorType:'limited',disabled:true, aggrType:''},
         ],
         start_date: "",
         end_date: "",
         tech_type: "",
-        tech_type:"CDTE"
+        tech_type:"Todos"
     }
     
     render(){
@@ -42,19 +40,24 @@ class AgregadorMenu extends Component{
                                 style={{margin:"0.5em"}}
                                 className="date-selector"
                                 id="date"
+                                data-date-format="DD MMMM YYYY" 
+                                onChange={this.handleChange('start_date')}
                                 label="Data Inicial"
                                 type="date"
                                 variant="outlined"
-                                defaultValue="2017-05-24"
+                                defaultValue="27-08-2017"
                                 InputLabelProps={{shrink: true,}}
                     />
                     <TextField
+                                data-date-format="DD MMMM YYYY" 
                                 className="date-selector"
                                 id="date"
+                                format="yyyy-MM-dd HH:mm:ss"
+                                onChange={this.handleChange('end_date')}
                                 label="Data Final"
                                 type="date"
                                 variant="outlined"
-                                defaultValue="2020-05-24"
+                                defaultValue="28-08-2017"
                                 InputLabelProps={{shrink: true,}}
                     />
                 </div>
@@ -63,20 +66,19 @@ class AgregadorMenu extends Component{
                     <Divider></Divider>
                     <div id="interno">
                         Tipo de Tecnologia do painel:
-                            <TextField 
-                                id="standard-select-currency"
-                                select
-                                variant="outlined"
-                                style={{marginLeft:"5em",marginTop:"0.5em",width:"20em",marginBottom:"0.5em"}}
+                        <FormControl variant="outlined"   style={{marginLeft:"5em",marginTop:"0.5em",width:"20em",marginBottom:"0.5em"}} >
+                            <InputLabel >Tipo de Agregação</InputLabel>
+                            <Select
+                                name={'tech_type'}
                                 value={this.state.tech_type}
+                                onChange={this.handleChange('tech_type')}
+                                label="Tipo de Tecnolgia"
                             >
-                                <MenuItem>
-                                    sddfghgfhfgh
-                                </MenuItem>
-                                <MenuItem>
-                                    sddfghgfhfgh
-                                </MenuItem>
-                            </TextField>
+                                <MenuItem value={"CDTE"}>CDTE</MenuItem>
+                                <MenuItem value={"Mono"}>Mono</MenuItem>
+                                <MenuItem value={"Todos"}>Outro</MenuItem>
+                            </Select>
+                        </FormControl>
                     </div>
                     <Divider></Divider>
                 </div>
@@ -110,7 +112,19 @@ class AgregadorMenu extends Component{
     handleChange = input => e => {this.setState({[input]: e.target.value})}
 
     enviaDados = () =>{
-        ipcRenderer.send("makeAggregation", this.state)
+        ipcRenderer.send("makeAggregation", { 
+            data_inicio:    this.state.start_date,
+            data_fim:       this.state.end_date,
+            
+            vdc:            this.state.agrr_selections[0].aggrType,
+            idc:            this.state.agrr_selections[1].aggrType,
+            vac:            this.state.agrr_selections[2].aggrType,
+            iac:            this.state.agrr_selections[3].aggrType,
+            freq:           this.state.agrr_selections[4].aggrType, 
+            pac:            this.state.agrr_selections[5].aggrType,
+            ene:            this.state.agrr_selections[6].aggrType,
+            whs:            this.state.agrr_selections[7].aggrType,
+        })
     }
 
     toggleCheck = (event) =>{
@@ -132,16 +146,17 @@ class AgregadorMenu extends Component{
         var agrr_selections = this.state.agrr_selections
         agrr_selections = agrr_selections.map( (selection)=>{
             if(selection.name == event.target.name){
-                return { name:selection.name, selectorType:event.target.value, disabled: selection.disabled }
+                return { name:selection.name, aggrType:event.target.value, selectorType:selection.selectorType, disabled: selection.disabled }
             }
             else{
-                return { name:selection.name, selectorType:selection.selectorType, disabled: selection.disabled }
+                return { name:selection.name, aggrType:selection.aggrType, selectorType:selection.selectorType, disabled: selection.disabled }
             }
         })
         this.setState({agrr_selections})
         console.log(this.state)
       }
-      
+    
+     
 }
 
 export default AgregadorMenu

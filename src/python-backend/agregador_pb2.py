@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0f\x61gregador.proto\"\"\n\x13simpleStringRequest\x12\x0b\n\x03req\x18\x01 \x01(\t\"(\n\x14simpleStringResponse\x12\x10\n\x08resposta\x18\x01 \x01(\t\"N\n\x0finfoFTP_Request\x12\x0c\n\x04host\x18\x01 \x01(\t\x12\r\n\x05porta\x18\x02 \x01(\t\x12\x0f\n\x07usuario\x18\x03 \x01(\t\x12\r\n\x05senha\x18\x04 \x01(\t\"\x9f\x01\n\rAgregregation\x12\x13\n\x0b\x64\x61ta_inicio\x18\x01 \x01(\t\x12\x10\n\x08\x64\x61ta_fim\x18\x02 \x01(\t\x12\x0b\n\x03vdc\x18\x03 \x01(\t\x12\x0b\n\x03idc\x18\x04 \x01(\t\x12\x0b\n\x03vac\x18\x05 \x01(\t\x12\x0b\n\x03iac\x18\x06 \x01(\t\x12\x0c\n\x04\x66req\x18\x07 \x01(\t\x12\x0b\n\x03pac\x18\x08 \x01(\t\x12\x0b\n\x03\x65ne\x18\t \x01(\t\x12\x0b\n\x03whs\x18\n \x01(\t2\xf4\x01\n\x0b\x41ggregation\x12;\n\x0cSendDataPath\x12\x14.simpleStringRequest\x1a\x15.simpleStringResponse\x12\x38\n\rSendParamsFTP\x12\x10.infoFTP_Request\x1a\x15.simpleStringResponse\x12\x31\n\x0fMakeAggregation\x12\x0e.Agregregation\x1a\x0e.Agregregation\x12;\n\rsendGraphData\x12\x14.simpleStringRequest\x1a\x14.simpleStringRequestb\x06proto3'
+  serialized_pb=b'\n\x0f\x61gregador.proto\"\"\n\x13simpleStringRequest\x12\x0b\n\x03req\x18\x01 \x01(\t\"(\n\x14simpleStringResponse\x12\x10\n\x08resposta\x18\x01 \x01(\t\"N\n\x0finfoFTP_Request\x12\x0c\n\x04host\x18\x01 \x01(\t\x12\r\n\x05porta\x18\x02 \x01(\t\x12\x0f\n\x07usuario\x18\x03 \x01(\t\x12\r\n\x05senha\x18\x04 \x01(\t\"\xb2\x01\n\rAgregregation\x12\x13\n\x0b\x64\x61ta_inicio\x18\x01 \x01(\t\x12\x10\n\x08\x64\x61ta_fim\x18\x02 \x01(\t\x12\x11\n\ttech_type\x18\x03 \x01(\t\x12\x0b\n\x03vdc\x18\x04 \x01(\t\x12\x0b\n\x03idc\x18\x05 \x01(\t\x12\x0b\n\x03vac\x18\x06 \x01(\t\x12\x0b\n\x03iac\x18\x07 \x01(\t\x12\x0c\n\x04\x66req\x18\x08 \x01(\t\x12\x0b\n\x03pac\x18\t \x01(\t\x12\x0b\n\x03\x65ne\x18\n \x01(\t\x12\x0b\n\x03whs\x18\x0b \x01(\t2\xf4\x01\n\x0b\x41ggregation\x12;\n\x0cSendDataPath\x12\x14.simpleStringRequest\x1a\x15.simpleStringResponse\x12\x38\n\rSendParamsFTP\x12\x10.infoFTP_Request\x1a\x15.simpleStringResponse\x12\x31\n\x0fMakeAggregation\x12\x0e.Agregregation\x1a\x0e.Agregregation\x12;\n\rsendGraphData\x12\x14.simpleStringRequest\x1a\x14.simpleStringRequestb\x06proto3'
 )
 
 
@@ -165,57 +165,64 @@ _AGREGREGATION = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='vdc', full_name='Agregregation.vdc', index=2,
+      name='tech_type', full_name='Agregregation.tech_type', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='idc', full_name='Agregregation.idc', index=3,
+      name='vdc', full_name='Agregregation.vdc', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='vac', full_name='Agregregation.vac', index=4,
+      name='idc', full_name='Agregregation.idc', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='iac', full_name='Agregregation.iac', index=5,
+      name='vac', full_name='Agregregation.vac', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='freq', full_name='Agregregation.freq', index=6,
+      name='iac', full_name='Agregregation.iac', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='pac', full_name='Agregregation.pac', index=7,
+      name='freq', full_name='Agregregation.freq', index=7,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='ene', full_name='Agregregation.ene', index=8,
+      name='pac', full_name='Agregregation.pac', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='whs', full_name='Agregregation.whs', index=9,
+      name='ene', full_name='Agregregation.ene', index=9,
       number=10, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='whs', full_name='Agregregation.whs', index=10,
+      number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -233,7 +240,7 @@ _AGREGREGATION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=178,
-  serialized_end=337,
+  serialized_end=356,
 )
 
 DESCRIPTOR.message_types_by_name['simpleStringRequest'] = _SIMPLESTRINGREQUEST
@@ -279,8 +286,8 @@ _AGGREGATION = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=340,
-  serialized_end=584,
+  serialized_start=359,
+  serialized_end=603,
   methods=[
   _descriptor.MethodDescriptor(
     name='SendDataPath',

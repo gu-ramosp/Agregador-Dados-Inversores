@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
 
 export function SelectorInput(props){  
 
-    if(props.aggrType == "limited"){
+    if(props.selectorType == "limited"){
         return    <FormControl variant="outlined" className={useStyles().formControl}>
                     <InputLabel >Tipo de Agregação</InputLabel>
                     <Select

@@ -26,13 +26,15 @@ message infoFTP_Request{
 message Agregregation{
     string data_inicio  = 1;
     string data_fim =     2;
-    string vdc  =         3;
-    string idc =          4;
-    string vac =          5;
-    string iac =          6;
-    string freq =         7;
-    string pac =          8;
-    string ene =          9;
-    string whs =          10;
+    string tech_type =    3;
+    string vdc  =         4;
+    string idc =          5;
+    string vac =          6;
+    string iac =          7;
+    string freq =         8;
+    string pac =          9;
+    string ene =          10;
+    string whs =          11;
 }
+
 

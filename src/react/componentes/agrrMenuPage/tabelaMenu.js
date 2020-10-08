@@ -34,7 +34,7 @@ class TableMenu extends Component{
                 <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={row.name}  onChange={this.toggleCheck}/>
                 {row.name}
               </TableCell>
-              <SelectorInput  changeSelection={this.changeSelection} aggrType={row.selectorType} aggrName={row.name} disabled={row.disabled}></SelectorInput>
+              <SelectorInput  changeSelection={this.changeSelection} aggrType={row.aggrType} selectorType={row.selectorType} aggrName={row.name} disabled={row.disabled}></SelectorInput>
             </TableRow>
           ))}
         </TableBody>
