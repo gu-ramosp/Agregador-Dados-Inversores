@@ -26,8 +26,6 @@ class StartPage extends Component{
         const values = {host,porta,usuario,senha }
         return(
             <div className="body">
-                {/* <TableMenu changeSelection={this.changeSelection} agrr_selections={this.state.agrr_selections}></TableMenu> */}
-                {/* <SelectorInput changeSelection={this.fun} aggrType={this.state.agrr_selections.idc}></SelectorInput> */}
                 <AppBar id="header">
                     <h2 >Escolha o lugar de onde deseja-se obter os dados para agregação</h2>
                 </AppBar>
@@ -64,7 +62,7 @@ class StartPage extends Component{
                     </Link>
                     <h2>OU</h2>
                     <Link to={this.state.btnGraficos}>
-                        <Button variant="contained" to="/graficos"  disabled={this.state.desabilitado}  id="graficos-btn" color="primary">
+                        <Button variant="contained" to="/graficos"  disabled={true}  id="graficos-btn" color="primary">
                             Gráficos 
                         </Button>
                     </Link>
@@ -95,7 +93,7 @@ class StartPage extends Component{
     }
 
    dirPath_Res =  ipcRenderer.on("dirPathResult", (event, arg) => {
-        console.log("Resultado do python dataPAth")
+        console.log("\nResultado do python dataPath")
         console.log(arg)
         this.setState({desabilitado: false})
     })

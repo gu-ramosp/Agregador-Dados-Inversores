@@ -67,16 +67,15 @@ class AgregadorMenu extends Component{
                     <div id="interno">
                         Tipo de Tecnologia do painel:
                         <FormControl variant="outlined"   style={{marginLeft:"5em",marginTop:"0.5em",width:"20em",marginBottom:"0.5em"}} >
-                            <InputLabel >Tipo de Agregação</InputLabel>
                             <Select
                                 name={'tech_type'}
                                 value={this.state.tech_type}
                                 onChange={this.handleChange('tech_type')}
-                                label="Tipo de Tecnolgia"
                             >
                                 <MenuItem value={"CDTE"}>CDTE</MenuItem>
-                                <MenuItem value={"Mono"}>Mono</MenuItem>
-                                <MenuItem value={"Todos"}>Outro</MenuItem>
+                                <MenuItem value={"CIGS"}>CIGS</MenuItem>
+                                <MenuItem value={"MONO"}>MONO</MenuItem>
+                                <MenuItem value={"POLI"}>POLI</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
@@ -115,7 +114,7 @@ class AgregadorMenu extends Component{
         ipcRenderer.send("makeAggregation", { 
             data_inicio:    this.state.start_date,
             data_fim:       this.state.end_date,
-            
+            tech_type:      this.state.tech_type,
             vdc:            this.state.agrr_selections[0].aggrType,
             idc:            this.state.agrr_selections[1].aggrType,
             vac:            this.state.agrr_selections[2].aggrType,

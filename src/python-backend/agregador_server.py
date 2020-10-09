@@ -5,6 +5,7 @@ from concurrent import futures
 import agregador_pb2
 import agregador_pb2_grpc
 import os
+import re
 import pandas as pd 
 from ftplib import FTP
 
@@ -20,11 +21,14 @@ def main():
     server.wait_for_termination()
 
 
-def _makeAgregation(DATA_PATH,PERIODO,TIPO_INVERSOR, AGREGATIONS):
+def _makeAgregation(aggr_request_data):
     # complete_df = fetchData(DATA_PATH,PERIODO,TIPO_INVERSOR)
-    print("dentro_")
-    ftp_params if print("chamou ftp") else print("chamou local")
-    #TODO: Fazer cada agregação em AGREGATIONS e retornar lista com elas
+    print("dentro _makeAgregation")
+    complete_df = ftp_params if fetchDataFTP(aggr_request_data) else fetchDataLocal(aggr_request_data)
+    print(complete_df)
+    print(aggr_request_data)
+
+    return "agregações"
 
 
 def connectFTP(domain,user,password):
@@ -38,32 +42,50 @@ def connectFTP(domain,user,password):
     ftp.dir()        
 
 
-def fetchData(DATA_PATH,PERIODO,TIPO_INVERSOR):
-
+def fetchDataLocal(aggr_request_data):
+    global local_files_path
+    print('fetchDataLocal')
+    print(local_files_path)
     dataframes_list = []
     # TODO: Converter string de periodo para lista de anos e meses separados
-    YEARS = ['2019']
-    MESES = ['08','11']
+    data_inicio = aggr_request_data.data_inicio[2:]
+    data_fim    = aggr_request_data.data_fim[2:]
+    tech_type   = aggr_request_data.tech_type
+    print(data_inicio,data_fim)
+    print(tech_type)
+
+    if(tech_type=="todas"):
+        pattern = re.compile(r'\w\w-\w\w\w\w-(\d\d-\d\d-\d\d|\d\d-\d\d-\d\d)')
+    else:
+        #TODO Mono e Poli é mon1 mon2 e pol1 pol2 ajustar essa porcaria
+        pattern = re.compile(r'\w\w-'+f'{tech_type.lower()}' + r'-(\d\d-\d\d-\d\d' + r'|\d\d-\d\d-\d\d)')
 
     try:
         # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
-        for path, dirs, files in os.walk(DATA_PATH):
-            dirs[:] = [d for d in dirs
-                        if d  in YEARS 
-                        or d  in MESES
-                        or d  in ['inversores'] 
-                        or d  in TIPO_INVERSOR]
+        for path, dirs, files in os.walk(local_files_path):
+            # dirs[:] = [d for d in dirs
+            #             if d  in  ['2019']
+            #             or d  in ['08','11']
+            #             or d  in ['inversores'] 
+            #             or d  in 'cdte']
+
             #Lê arquivos com pandas e adiciona todos em um df
             for file in files:
-                dataframes_list.append(normalizeDataframes(os.path.join(path,file)))
+                if(pattern.match(file[:-4])):
+                    print(file)
+                    dataframes_list.append(normalizeDataframes(os.path.join(path,file)))
         complete_df = pd.concat(dataframes_list,ignore_index=True)
         print(complete_df.shape)
         print(complete_df.head())
-        return complete_df
+        return "complete_df"
     except Exception as e:
         print(f"erro:{e}")
         return ("Ocorreu um ero ao buscar arquivos para agregação.\nVerifique se o diretório realmente contém os arquivos.\nErro: {e}")
     
+
+def fetchDataFTP(aggr_request_data):
+    print('fetchDataFTP')
+    pass
 
 def normalizeDataframes(file):
     df = pd.read_csv(file, encoding='utf8')
@@ -71,6 +93,7 @@ def normalizeDataframes(file):
         df['lim'] = '100%'
         df['fac'] =  1.00
     return df
+
 
 def outer():
     global ftp_params
@@ -82,18 +105,23 @@ def outer():
 class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
     def SendParamsFTP(self, request, context):
         global ftp_params
+        global local_files_path 
         print("Dentro SendParamsFTP")
+        ftp_params = request
+        local_files_path = None
         response = agregador_pb2.simpleStringResponse()
         response.resposta = "Chamou SendParamsFTP "
-        ftp_params = request
+     
         outer()
         print(ftp_params)
         return response
 
     def SendDataPath(self, request, context):
+        global ftp_params
         global local_files_path 
-        local_files_path = request.req
         print("Dentro SendDataPath")
+        local_files_path = request.req
+        ftp_params = None
         print(request.req)
         print(request)
         response = agregador_pb2.simpleStringResponse()
@@ -101,11 +129,15 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         return response
     
     def MakeAggregation(self, request, context):
-        print("Make agg")
-        response = agregador_pb2.Agregregation()
-        response.data_inicio= 'teste'
+        print("Fazendo agregações")
+
         print(request)
-        print(request.vdc)
+        aggregations = _makeAgregation(request)
+
+        response = agregador_pb2.Agregregation()
+        response.data_inicio= 'teste' # colocar um por um ou achar um jeito melhor
+
+   
 
         return response
 
