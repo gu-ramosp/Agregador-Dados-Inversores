@@ -6,6 +6,7 @@ import agregador_pb2
 import agregador_pb2_grpc
 import os
 import re
+from datetime import datetime
 import pandas as pd 
 from ftplib import FTP
 
@@ -22,14 +23,11 @@ def main():
 
 
 def _makeAgregation(aggr_request_data):
-    # complete_df = fetchData(DATA_PATH,PERIODO,TIPO_INVERSOR)
     print("dentro _makeAgregation")
     complete_df = ftp_params if fetchDataFTP(aggr_request_data) else fetchDataLocal(aggr_request_data)
 
-    print(complete_df.shape)
     complete_df = complete_df.loc[complete_df["mod"] == 1]
-    print(complete_df.shape)
-    
+
     for key, value in aggr_request_data.items():
         if value!="" and (key=="whs" or key== "ene"):
             #TODO: achar um jeito melhor de escrever isso, e terminar essa lógica de agregação
@@ -59,36 +57,37 @@ def connectFTP(domain,user,password):
 def fetchDataLocal(aggr_request_data):
     global local_files_path
     print('fetchDataLocal')
-    print(local_files_path)
     dataframes_list = []
-    # TODO: Converter string de periodo para lista de anos e meses separados
-    data_inicio = aggr_request_data['data_inicio'][2:]
-    data_fim    = aggr_request_data['data_fim'][2:]
+
+    data_inicio = aggr_request_data['data_inicio']
+    data_fim    = aggr_request_data['data_fim']
     tech_type   = aggr_request_data['tech_type']
+
+    data_inicio = datetime.strptime(data_inicio, '%Y-%m-%d')
+    data_fim = datetime.strptime(data_fim , '%Y-%m-%d')
+
+
     print(data_inicio,data_fim)
     print(tech_type)
 
     if(tech_type=="todas"):
-        pattern = re.compile(r'\w\w-\w\w\w\w-(\d\d-\d\d-\d\d|\d\d-\d\d-\d\d)')
+        pattern = re.compile(r'\w\w-\w\w\w\w-(\d\d-\d\d-\d\d)')
     else:
         #TODO Mono e Poli é mon1 mon2 e pol1 pol2 ajustar essa porcaria
         pattern = re.compile(r'\w\w-'+f'{tech_type.lower()}' + r'-(\d\d-\d\d-\d\d' + r'|\d\d-\d\d-\d\d)')
 
     try:
-        # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
-        for path, dirs, files in os.walk(local_files_path):
-            # dirs[:] = [d for d in dirs
-            #             if d  in  ['2019']
-            #             or d  in ['08','11']
-            #             or d  in ['inversores'] 
-            #             or d  in 'cdte']
-
+        for path, dirs, files in os.walk(local_files_path):    
             #Lê arquivos com pandas e adiciona todos em um df
             for file in files:
-                #TODO pegar parte numerica e convert to date time, comparar se esta intevalo  
+                # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
                 if(pattern.match(file[:-4])):
-                    print(file)
-                    dataframes_list.append(normalizeDataframes(os.path.join(path,file)))
+                    try:
+                        data_file = datetime.strptime(file[8:-4], '%y-%m-%d')
+                        if(data_file > data_inicio and data_file < data_fim):
+                            dataframes_list.append(normalizeDataframes(os.path.join(path,file)))
+                    except:
+                        print(f"Erro ao ler arquivo:\n{file}\n\n\n")
         complete_df = pd.concat(dataframes_list,ignore_index=True)
         print(complete_df.shape)
         print(complete_df.head())
@@ -155,7 +154,7 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
 
         aggregations = _makeAgregation(aggr_req_dict)
 
-        # É, tá assim porque não sei como interar protobuffers e a documentação não ajuda ()
+        # É, tá assim porque não sei como interar protobuffers e a documentação não ajuda (2)
         response = agregador_pb2.Agregregation()
         response.data_inicio= aggregations['data_inicio']
         response.data_fim= aggregations['data_fim']
