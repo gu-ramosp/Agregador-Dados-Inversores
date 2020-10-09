@@ -24,7 +24,7 @@ def main():
 
 def _makeAgregation(aggr_request_data):
     print("dentro _makeAgregation")
-    complete_df = ftp_params if fetchDataFTP(aggr_request_data) else fetchDataLocal(aggr_request_data)
+    complete_df = fetchDataFTP(aggr_request_data) if ftp_params else fetchDataLocal(aggr_request_data)
 
     complete_df = complete_df.loc[complete_df["mod"] == 1]
 
@@ -62,27 +62,26 @@ def fetchDataLocal(aggr_request_data):
     data_inicio = aggr_request_data['data_inicio']
     data_fim    = aggr_request_data['data_fim']
     cidade   = aggr_request_data['cidade']
-
     data_inicio = datetime.strptime(data_inicio, '%Y-%m-%d')
     data_fim = datetime.strptime(data_fim , '%Y-%m-%d')
-
-
-    print(data_inicio,data_fim)
-    print(cidade)
+    exclusion_lista_tech = []
+    string_CDTE =  r'cdte'  if aggr_request_data['CDTE']  else ''
+    string_CIGS =  r'cigs'  if aggr_request_data['CIGS'] else ''
+    string_MONO =  r'mon\d' if aggr_request_data['MONO'] else ''
+    string_POLI =  r'pol\d' if aggr_request_data['POLI'] else ''
 
     if(cidade=="todas"):
-        pattern = re.compile(r'\w\w-\w\w\w\w-(\d\d-\d\d-\d\d)')
+        pattern = re.compile(r'\w\w-'+ f'({string_CDTE}|{string_CIGS}|{string_MONO}|{string_POLI})'+ r'-\d\d-\d\d-\d\d')
     else:
-        #TODO Mono e Poli é mon1 mon2 e pol1 pol2 ajustar essa porcaria
-        # pattern = re.compile(r'\w\w-'+f'{cidade.lower()}' + r'-(\d\d-\d\d-\d\d' + r'|\d\d-\d\d-\d\d)')
-        pass
+        pattern = re.compile(f'{cidade}-'+ f'({string_CDTE}|{string_CIGS}|{string_MONO}|{string_POLI})' + r'-\d\d-\d\d-\d\d')
+    print(pattern)
 
     try:
         for path, dirs, files in os.walk(local_files_path):    
             #Lê arquivos com pandas e adiciona todos em um df
             for file in files:
                 # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
-                if(pattern.match(file[:-4])):
+                if pattern.match(file[:-4]):
                     try:
                         data_file = datetime.strptime(file[8:-4], '%y-%m-%d')
                         if(data_file > data_inicio and data_file < data_fim):
