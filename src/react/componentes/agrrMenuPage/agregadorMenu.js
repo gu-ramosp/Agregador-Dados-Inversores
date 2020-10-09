@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
-import { Button, Input,Divider,MenuItem,TextField,AppBar,Paper,makeStyles,FormHelperText,FormControl,Select,InputLabel} from '@material-ui/core';
+import { Button, Input,Divider,MenuItem,TextField,AppBar,Paper,makeStyles,FormHelperText,FormControl,Select,InputLabel,Checkbox} from '@material-ui/core';
 const { ipcRenderer } = window.require("electron");
 import TableMenu from './tabelaMenu';
 import './agregadorMenu.css'
@@ -10,19 +10,22 @@ class AgregadorMenu extends Component{
 
     state = {
         agrr_selections : [ 
-            {name: 'vdc',selectorType:'limited',disabled:true, aggrType:''}, //Tensão DC
-            {name: 'idc',selectorType:'limited',disabled:true, aggrType:''},//Corrente DC
-            {name:  'vac', selectorType:'limited',disabled:true, aggrType:''}, // Tensão AC
-            {name: 'iac',selectorType:'limited',disabled:true, aggrType:''}, //Corrente AC
-            {name:'freq',selectorType:'full',disabled:true, aggrType:''}, //Frequêcia
-            {name: 'pac',selectorType:'limited',disabled:true, aggrType:''}, //Potência AC
-            {name: 'ene', selectorType:'limited',disabled:true, aggrType:''}, //Energia Total
-            {name: 'whs',selectorType:'limited',disabled:true, aggrType:''},
+            {name: 'Tensão DC ',selectorType:'full',disabled:true, aggrType:''}, //Tensão DC
+            {name: 'Corrente DC',selectorType:'full',disabled:true, aggrType:''},//Corrente DC
+            {name:  'Tensão AC', selectorType:'full',disabled:true, aggrType:''}, // Tensão AC
+            {name: 'Corrente AC',selectorType:'full',disabled:true, aggrType:''}, //Corrente AC
+            {name:'Frequêcia',selectorType:'full',disabled:true, aggrType:''}, //Frequêcia
+            {name: 'Potência AC',selectorType:'full',disabled:true, aggrType:''}, //Potência AC
+            {name: 'Energia Gerada', selectorType:'limited',disabled:true, aggrType:'total'}, //Energia Total
+            {name: 'whs',selectorType:'limited',disabled:true, aggrType:'total'},
         ],
         start_date: "",
         end_date: "",
-        tech_type: "",
-        tech_type:"Todos"
+        cidade: "",
+        CDTE: false,
+        CIGS: false,
+        MONO: false,
+        POLI: false
     }
     
     render(){
@@ -65,19 +68,33 @@ class AgregadorMenu extends Component{
                 <div className="tech-type-menu">
                     <Divider></Divider>
                     <div id="interno">
-                        Tipo de Tecnologia do painel:
-                        <FormControl variant="outlined"   style={{marginLeft:"5em",marginTop:"0.5em",width:"20em",marginBottom:"0.5em"}} >
+                        <FormControl variant="outlined"   style={{marginRight:"3em",marginTop:"0.5em",width:"20em",marginBottom:"0.5em"}} >
+                            <InputLabel >Cidade</InputLabel>
                             <Select
-                                name={'tech_type'}
-                                value={this.state.tech_type}
-                                onChange={this.handleChange('tech_type')}
+                                label="Cidade"
+                                name={'cidade'}
+                                value={this.state.cidade}
+                                onChange={this.handleChange('cidade')}
                             >
-                                <MenuItem value={"CDTE"}>CDTE</MenuItem>
-                                <MenuItem value={"CIGS"}>CIGS</MenuItem>
-                                <MenuItem value={"MONO"}>MONO</MenuItem>
-                                <MenuItem value={"POLI"}>POLI</MenuItem>
-                            </Select>
+                                <MenuItem value={"todas"}>Todas</MenuItem>
+                                <MenuItem value={"CT"}>Curitiba</MenuItem>
+                                <MenuItem value={"CM"}>Campo Mourão</MenuItem>
+                                <MenuItem value={"MD"}>Medianeira</MenuItem>
+                                <MenuItem value={"PB"}>Pato Branco</MenuItem>
+                                <MenuItem value={"CP"}>Cornélio Procópio</MenuItem>
+                                <MenuItem value={"PG"}>Ponta Grossa</MenuItem>
+                           </Select>
                         </FormControl>
+                      
+                        CDTE
+                        <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={'CDTE'}  onChange={this.toggleTick('CDTE')}/>
+                        CIGS
+                        <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={'CIGS'}  onChange={this.toggleTick('CIGS')}/>
+                        MONO
+                        <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={'MONO'}  onChange={this.toggleTick('MONO')}/>
+                        POLI
+                        <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={'POLI'}  onChange={this.toggleTick('POLI')}/>
+
                     </div>
                     <Divider></Divider>
                 </div>
@@ -114,7 +131,7 @@ class AgregadorMenu extends Component{
         ipcRenderer.send("makeAggregation", { 
             data_inicio:    this.state.start_date,
             data_fim:       this.state.end_date,
-            tech_type:      this.state.tech_type,
+            cidade:         this.state.cidade,
             vdc:            this.state.agrr_selections[0].aggrType,
             idc:            this.state.agrr_selections[1].aggrType,
             vac:            this.state.agrr_selections[2].aggrType,
@@ -123,17 +140,32 @@ class AgregadorMenu extends Component{
             pac:            this.state.agrr_selections[5].aggrType,
             ene:            this.state.agrr_selections[6].aggrType,
             whs:            this.state.agrr_selections[7].aggrType,
+            CDTE:           this.state.CDTE,
+            CIGS:           this.state.CIGS,
+            MONO:           this.state.MONO,
+            POLI:           this.state.POLI,
         })
     }
+
+    toggleTick = input => e => {this.setState({[input]: !this.state[input]})}
+
 
     toggleCheck = (event) =>{
         var agrr_selections = this.state.agrr_selections
         agrr_selections = agrr_selections.map( (selection)=>{
             if(selection.name == event.target.name){
-                return { name:selection.name, selectorType:selection.selectorType, disabled: !selection.disabled }
+                return {name:selection.name, 
+                        selectorType:selection.selectorType, 
+                        aggrType: selection.aggrType,
+                        disabled: !selection.disabled
+                    }
             }
             else{
-                return { name:selection.name, selectorType:selection.selectorType, disabled: selection.disabled }
+                return {name:selection.name, 
+                        selectorType:selection.selectorType,
+                        aggrType: selection.aggrType,
+                        disabled: selection.disabled 
+                    }
             }
         })
         this.setState({agrr_selections})

@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
 import {SelectorInput} from "./selectorInput"
 
 class TableMenu extends Component{
@@ -17,8 +18,8 @@ class TableMenu extends Component{
 
   render(){
     return(
-      <TableContainer componnent={Paper}>
-      <Table  size="small" aria-label="simple table">
+      <TableContainer componnent={Paper} >
+      <Table  size="small" aria-label="simple table" style={{ minWidth: 650,margin:0}}>
         <TableHead style={{position:"sticky",position:"-webkit-sticky"}}>
           <TableRow>
             <TableCell>Variável a Agregar</TableCell>
@@ -34,7 +35,9 @@ class TableMenu extends Component{
                 <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name={row.name}  onChange={this.toggleCheck}/>
                 {row.name}
               </TableCell>
-              <SelectorInput  changeSelection={this.changeSelection} aggrType={row.aggrType} selectorType={row.selectorType} aggrName={row.name} disabled={row.disabled}></SelectorInput>
+              <TableCell component="th" scope="row">
+                <SelectorInput  changeSelection={this.changeSelection} aggrType={row.aggrType} selectorType={row.selectorType} aggrName={row.name} disabled={row.disabled}></SelectorInput>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -43,13 +46,7 @@ class TableMenu extends Component{
     )
   }
 
-  useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-      margin:0
-    },
-  });
-  
+
   toggleCheck = (e) =>{
     this.props.toggleCheck(e)
   }

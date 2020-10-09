@@ -22,20 +22,7 @@ const useStyles = makeStyles(() => ({
 export function SelectorInput(props){  
 
     if(props.selectorType == "limited"){
-        return    <FormControl variant="outlined" className={useStyles().formControl}>
-                    <InputLabel >Tipo de Agregação</InputLabel>
-                    <Select
-                      disabled={props.disabled}
-                      name={props.aggrName}
-                      value={props.aggrType}
-                      onChange={props.changeSelection}
-                      label="Tipo de Agregação"
-                    >
-                      <MenuItem value=""><em>None</em></MenuItem>
-                      <MenuItem value={"Soma"}>Soma</MenuItem>
-                      <MenuItem value={"outro"}>Outro</MenuItem>
-                    </Select>
-                  </FormControl>
+        return    <h4 style={{"textAlign":"center"}}> Total</h4>
     }
 
     else{
@@ -48,10 +35,11 @@ export function SelectorInput(props){
                       onChange={props.changeSelection}
                       label="Tipo de Agregação"
                     >
-                      <MenuItem value=""><em>None</em></MenuItem>
                       <MenuItem value={"media"}>Média</MenuItem>
                       <MenuItem value={"mediana"}>Mediana</MenuItem>
                       <MenuItem value={"Soma"}>Soma</MenuItem>
+                      <MenuItem value={"maximo"}>Máximo</MenuItem>
+                      <MenuItem value={"minimo"}>Mínimo</MenuItem>
                     </Select>
                   </FormControl>
     }

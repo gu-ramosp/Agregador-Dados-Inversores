@@ -61,20 +61,21 @@ def fetchDataLocal(aggr_request_data):
 
     data_inicio = aggr_request_data['data_inicio']
     data_fim    = aggr_request_data['data_fim']
-    tech_type   = aggr_request_data['tech_type']
+    cidade   = aggr_request_data['cidade']
 
     data_inicio = datetime.strptime(data_inicio, '%Y-%m-%d')
     data_fim = datetime.strptime(data_fim , '%Y-%m-%d')
 
 
     print(data_inicio,data_fim)
-    print(tech_type)
+    print(cidade)
 
-    if(tech_type=="todas"):
+    if(cidade=="todas"):
         pattern = re.compile(r'\w\w-\w\w\w\w-(\d\d-\d\d-\d\d)')
     else:
         #TODO Mono e Poli é mon1 mon2 e pol1 pol2 ajustar essa porcaria
-        pattern = re.compile(r'\w\w-'+f'{tech_type.lower()}' + r'-(\d\d-\d\d-\d\d' + r'|\d\d-\d\d-\d\d)')
+        # pattern = re.compile(r'\w\w-'+f'{cidade.lower()}' + r'-(\d\d-\d\d-\d\d' + r'|\d\d-\d\d-\d\d)')
+        pass
 
     try:
         for path, dirs, files in os.walk(local_files_path):    
@@ -137,12 +138,14 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
 
     def MakeAggregation(self, request, context):
         print("Fazendo agregações")
-        
-        # É, tá assim porque não sei como interar protobuffers e a documentação não ajuda
+
+        print(request)
+
+        # # É, tá assim porque não sei como interar protobuffers e a documentação não ajuda
         aggr_req_dict = {}
         aggr_req_dict['data_inicio'] = request.data_inicio
         aggr_req_dict['data_fim'] = request.data_fim
-        aggr_req_dict['tech_type'] = request.tech_type
+        aggr_req_dict['cidade'] = request.cidade
         aggr_req_dict['vdc'] = request.vdc
         aggr_req_dict['idc'] = request.idc
         aggr_req_dict['vac'] = request.vac
@@ -151,6 +154,10 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         aggr_req_dict['pac'] = request.pac
         aggr_req_dict['ene'] = request.ene
         aggr_req_dict['whs'] = request.whs
+        aggr_req_dict['CDTE'] = request.CDTE
+        aggr_req_dict['CIGS'] = request.CIGS
+        aggr_req_dict['MONO'] = request.MONO
+        aggr_req_dict['POLI'] = request.POLI
 
         aggregations = _makeAgregation(aggr_req_dict)
 
@@ -158,7 +165,7 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         response = agregador_pb2.Agregregation()
         response.data_inicio= aggregations['data_inicio']
         response.data_fim= aggregations['data_fim']
-        response.tech_type= aggregations['tech_type']
+        response.cidade= aggregations['cidade']
         response.vdc= aggregations['vdc']
         response.idc= aggregations['idc']
         request.vac = aggregations['vac']
