@@ -18,7 +18,7 @@ def main():
     agregador_pb2_grpc.add_AggregationServicer_to_server(AggregationServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
-    print("servidor iniciado escutando na porta 50051")
+    print("(Versão 1) servidor iniciado escutando na porta 50051")
     server.wait_for_termination()
 
 
