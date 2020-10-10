@@ -9,24 +9,24 @@ const { ipcRenderer } = window.require("electron");
 
 class App extends Component{
     
+    state={
+        teste: 'Fata Morgana'
+    }
+
     render(){
         return(
             <HashRouter> 
                 <Switch>
                     <Route path="/" exact component={StartPage}/>  
                     <Route path="/menu" component={AgregadorMenu}/>     
-                    <Route path="/resultados" component={AgregadorResultados} />
+                    <Route path="/resultados" teste={"dsjflkjfd"} component={AgregadorResultados} />
                     <Route path="/graficos" component={GraficosPage} />
                 </Switch>
             </HashRouter> 
         ) 
     }
 
-    aggr_results = ipcRenderer.on("makeAggregation_Result", (event, arg) => {
-        console.log("o que eu quero")
-        console.log(arg)
-    })
-    
+  
     
 }
 
