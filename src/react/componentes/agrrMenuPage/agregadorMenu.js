@@ -16,8 +16,8 @@ class AgregadorMenu extends Component{
             {name: 'Corrente AC',selectorType:'full',disabled:true, aggrType:''}, //Corrente AC
             {name:'Frequêcia',selectorType:'full',disabled:true, aggrType:''}, //Frequêcia
             {name: 'Potência AC',selectorType:'full',disabled:true, aggrType:''}, //Potência AC
-            {name: 'Energia Gerada', selectorType:'limited',disabled:true, aggrType:'total'}, //Energia Total
-            {name: 'whs',selectorType:'limited',disabled:true, aggrType:'total'},
+            {name: 'Energia Gerada', selectorType:'limited',disabled:true, aggrType:''}, //Energia Total
+            {name: 'whs',selectorType:'limited',disabled:true, aggrType:''},
         ],
         start_date: "",
         end_date: "",
@@ -154,11 +154,20 @@ class AgregadorMenu extends Component{
         var agrr_selections = this.state.agrr_selections
         agrr_selections = agrr_selections.map( (selection)=>{
             if(selection.name == event.target.name){
-                return {name:selection.name, 
+                if(selection.disabled == true){
+                    return {name:selection.name, 
                         selectorType:selection.selectorType, 
-                        aggrType: selection.aggrType,
-                        disabled: !selection.disabled
+                        aggrType: "todos",
+                        disabled: false
                     }
+                } else{
+                    return {name:selection.name, 
+                        selectorType:selection.selectorType, 
+                        aggrType: "",
+                        disabled: true
+                        }
+                    }
+               
             }
             else{
                 return {name:selection.name, 
