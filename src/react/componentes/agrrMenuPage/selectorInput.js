@@ -35,11 +35,11 @@ export function SelectorInput(props){
                       onChange={props.changeSelection}
                       label="Tipo de Agregação"
                     >
-                      <MenuItem value={"media"}>Média</MenuItem>
-                      <MenuItem value={"mediana"}>Mediana</MenuItem>
-                      <MenuItem value={"Soma"}>Soma</MenuItem>
-                      <MenuItem value={"maximo"}>Máximo</MenuItem>
-                      <MenuItem value={"minimo"}>Mínimo</MenuItem>
+                      <MenuItem value={"mean"}>Média</MenuItem>
+                      <MenuItem value={"median"}>Mediana</MenuItem>
+                      <MenuItem value={"sum"}>Soma</MenuItem>
+                      <MenuItem value={"max"}>Máximo</MenuItem>
+                      <MenuItem value={"min"}>Mínimo</MenuItem>
                     </Select>
                   </FormControl>
     }

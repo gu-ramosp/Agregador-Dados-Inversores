@@ -29,17 +29,27 @@ def _makeAgregation(aggr_request_data):
     complete_df = complete_df.loc[complete_df["mod"] == 1]
 
     for key, value in aggr_request_data.items():
+        print(f'key: {key}, value:  {value}')
         if value!="" and (key=="whs" or key== "ene"):
-            #TODO: achar um jeito melhor de escrever isso, e terminar essa lógica de agregação
-            print(complete_df.loc[complete_df["timestamp_iso"] == complete_df.timestamp_iso.max()]['whs'].values[0])
-            print(complete_df.loc[complete_df["timestamp_iso"] == complete_df.timestamp_iso.min()]['whs'].values[0]) 
-            pass
-        elif(value!=""):
-            #TODO: Fazer agregação
-            aggr_request_data[key] = "4"
-            pass
-        print(f"key:{key},value: {value}")
+            valor_final = complete_df.loc[complete_df["timestamp_iso"] == complete_df.timestamp_iso.max()][key].values[0]
+            valor_inicial = complete_df.loc[complete_df["timestamp_iso"] == complete_df.timestamp_iso.min()][key].values[0]
+            valor_total = valor_final - valor_inicial
+            aggr_request_data[key] = str(valor_total)
+        elif(value!="" and (key in complete_df.columns) ):
+            print(f'key: {key}, value:  {value}\n')
+            if(value=="mean"):
+                aggr_request_data[key] = str( complete_df[key].mean())
+            elif(value=="median"):
+                aggr_request_data[key] = str( complete_df[key].median())
+            elif(value=="sum"):
+                aggr_request_data[key] = str( complete_df[key].sum())
+            elif(value=="max"):
+                aggr_request_data[key] = str( complete_df[key].max())
+            else:
+                aggr_request_data[key] = str( complete_df[key].min())
+            print(value)
 
+    print(aggr_request_data)
     return aggr_request_data
 
 
@@ -149,7 +159,7 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         aggr_req_dict['idc'] = request.idc
         aggr_req_dict['vac'] = request.vac
         aggr_req_dict['iac'] = request.iac
-        aggr_req_dict['freq'] = request.freq
+        aggr_req_dict['frq'] = request.freq
         aggr_req_dict['pac'] = request.pac
         aggr_req_dict['ene'] = request.ene
         aggr_req_dict['whs'] = request.whs
@@ -167,13 +177,14 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         response.cidade= aggregations['cidade']
         response.vdc= aggregations['vdc']
         response.idc= aggregations['idc']
-        request.vac = aggregations['vac']
-        request.iac = aggregations['iac']
-        request.freq = aggregations['freq']
-        request.pac = aggregations['pac']
-        request.ene = aggregations['ene']
-        request.whs = aggregations['whs']
+        response.vac = aggregations['vac']
+        response.iac = aggregations['iac']
+        response.freq = aggregations['frq']
+        response.pac = aggregations['pac']
+        response.ene = aggregations['ene']
+        response.whs = aggregations['whs']
 
+        print("finalizou request")
         return response
 
 
