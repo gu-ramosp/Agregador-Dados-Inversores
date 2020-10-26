@@ -26,7 +26,7 @@ const createWindow = () => {
 }
 
 
-var exe_path = __dirname + "/../python-backend/dist/agregador_server.exe"
+var exe_path =  __dirname + "/../python-backend/dist/agregador_server.exe"
 child.exec(exe_path, function(err, data) {
     if(err){
        console.error(err);

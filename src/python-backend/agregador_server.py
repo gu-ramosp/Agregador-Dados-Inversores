@@ -9,23 +9,29 @@ import re
 from datetime import datetime
 import pandas as pd 
 from ftplib import FTP
+import ftputil
 
 ftp_params = None
 local_files_path = None
+DEBUG_FTP_HOST = '127.0.0.1'
+DEBUG_FTP_USER = 'Gustavo'
+DEBUG_FPT_PASSWORD = 'password'
+
+#TODO: Lógica de buscas de dados duplicada para FPT e Local. Optimizar
 
 def main():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     agregador_pb2_grpc.add_AggregationServicer_to_server(AggregationServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
-    print("(Versão 1) servidor iniciado escutando na porta 50051")
+    print("(Versão 0.8) Servidor iniciado escutando na porta 50051")
     server.wait_for_termination()
 
 
 def _makeAgregation(aggr_request_data):
     print("dentro _makeAgregation")
-    complete_df = fetchDataFTP(aggr_request_data) if ftp_params else fetchDataLocal(aggr_request_data)
-
+    regex_string, data_inicio, data_fim = makeRegexString(aggr_request_data)
+    complete_df = fetchDataFTP(regex_string,data_inicio, data_fim) if ftp_params else fetchDataLocal(regex_string,data_inicio, data_fim)
     complete_df = complete_df.loc[complete_df["mod"] == 1]
 
     for key, value in aggr_request_data.items():
@@ -53,22 +59,7 @@ def _makeAgregation(aggr_request_data):
     return aggr_request_data
 
 
-def connectFTP(domain,user,password):
-    ftp = FTP(domain)
-    ftp.login(user=user, passwd=password)
-    print()
-    print(ftp.getwelcome())
-    print()
-    print(ftp.pwd())
-
-    ftp.dir()        
-
-
-def fetchDataLocal(aggr_request_data):
-    global local_files_path
-    print('fetchDataLocal')
-    dataframes_list = []
-
+def makeRegexString(aggr_request_data):
     data_inicio = aggr_request_data['data_inicio']
     data_fim    = aggr_request_data['data_fim']
     cidade   = aggr_request_data['cidade']
@@ -85,13 +76,20 @@ def fetchDataLocal(aggr_request_data):
     else:
         pattern = re.compile(f'{cidade}-'+ f'({string_CDTE}|{string_CIGS}|{string_MONO}|{string_POLI})' + r'-\d\d-\d\d-\d\d')
     print(pattern)
+    return pattern, data_inicio, data_fim
+
+
+def fetchDataLocal(regex_string,data_inicio,data_fim):
+    print('fetchDataLocal')
+    global local_files_path
+    dataframes_list = []
 
     try:
         for path, dirs, files in os.walk(local_files_path):    
             #Lê arquivos com pandas e adiciona todos em um df
             for file in files:
                 # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
-                if pattern.match(file[:-4]):
+                if regex_string.match(file[:-4]):
                     try:
                         data_file = datetime.strptime(file[8:-4], '%y-%m-%d')
                         if(data_file > data_inicio and data_file < data_fim):
@@ -107,9 +105,34 @@ def fetchDataLocal(aggr_request_data):
         return ("Ocorreu um ero ao buscar arquivos para agregação.\nVerifique se o diretório realmente contém os arquivos.\nErro: {e}")
     
 
-def fetchDataFTP(aggr_request_data):
+def fetchDataFTP(regex_string,data_inicio,data_fim):
     print('fetchDataFTP')
-    pass
+    global ftp_params 
+    dataframes_list = []
+
+
+    #TODO: pegar parametros FTP aqui
+
+    try:
+        with ftputil.FTPHost(DEBUG_FTP_HOST, DEBUG_FTP_USER, DEBUG_FPT_PASSWORD) as host:
+            for path, dirs, files in host.walk(host.curdir):
+                for file in files:
+                # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
+                    if regex_string.match(file[:-4]):
+                        try:
+                            data_file = datetime.strptime(file[8:-4], '%y-%m-%d')
+                            if(data_file > data_inicio and data_file < data_fim):
+                                dataframes_list.append(normalizeDataframes(os.path.join(path,file)))
+                        except:
+                            print(f"Erro ao ler arquivo:\n{file}\n\n\n")
+            complete_df = pd.concat(dataframes_list,ignore_index=True)
+            print(complete_df.shape)
+            print(complete_df.head())
+            return complete_df
+    except Exception as e:
+            print(f"erro:{e}")
+            return ("Ocorreu um ero ao buscar arquivos para agregação.\nVerifique se o diretório realmente contém os arquivos.\nErro: {e}")
+
 
 def normalizeDataframes(file):
     df = pd.read_csv(file, encoding='utf8')
@@ -117,6 +140,7 @@ def normalizeDataframes(file):
         df['lim'] = '100%'
         df['fac'] =  1.00
     return df
+
 
 
 class AggregationServicer(agregador_pb2_grpc.AggregationServicer):

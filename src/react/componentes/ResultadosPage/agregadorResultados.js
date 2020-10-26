@@ -11,7 +11,7 @@ class AgregadorResultados extends Component{
 
     state = {
         waiting:true,
-        resultados: undefined
+        resultados: 'undefined'
     }
 
 

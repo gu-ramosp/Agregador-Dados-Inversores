@@ -35,7 +35,6 @@ function SendParamsFTP(request){
     this.help = response
   });
   
-  console.log('Essa merda é assincrona mesmo')
   return  this.help
 }
 
