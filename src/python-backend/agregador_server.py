@@ -119,16 +119,8 @@ def fetchDataFTP(regex_string,data_inicio,data_fim):
                         try:
                             data_file = datetime.strptime(file[8:-4], '%y-%m-%d')
                             if(data_file > data_inicio and data_file < data_fim):
-                                print("eb")
-                                host.download(host.path.join(path,file),file)  
-                                print("goi")
-                                # print(host.path.join(path,file))
-                                # try:
-                                df = pd.read_csv(host.path.join(path,file), encoding='utf8')
-                                print(df.head)
-                                # except Exception as e:
-                                #     print(e)                
-
+                                with host.open(host.path.join(path,file), "r", encoding="utf8") as remote_file:
+                                    dataframes_list.append(normalizeDataframes(remote_file))
                         except Exception as e:
                             print(e)
             complete_df = pd.concat(dataframes_list,ignore_index=True)
