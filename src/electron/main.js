@@ -46,8 +46,14 @@ ipcMain.on("getDirPath", (event,arg)=>{
 })
 
 ipcMain.on("sendInfoFTP", (event, arg)=>{
-  var confirm = grpc_client.SendParamsFTP(arg)
-  event.reply('sendInfoFTP_Result', confirm )
+  // var confirm = grpc_client.SendParamsFTP(arg)
+  // event.reply('sendInfoFTP_Result', confirm )
+
+  grpc_client.client.SendParamsFTP(arg, (err, response)=> {
+    console.log('sendInfoFTP_cli:', response);
+    console.log("Erro: " + err)
+    event.reply('sendInfoFTP_Result', response )
+  });
 })
 
 ipcMain.on("makeAggregation", (event, arg)=>{

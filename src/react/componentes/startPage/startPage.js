@@ -60,12 +60,12 @@ class StartPage extends Component{
                             Avançar para agregações
                         </Button>
                     </Link>
-                    <h2>OU</h2>
+                    {/* <h2>OU</h2>
                     <Link to={this.state.btnGraficos}>
                         <Button variant="contained" to="/graficos"  disabled={true}  id="graficos-btn" color="primary">
                             Gráficos 
                         </Button>
-                    </Link>
+                    </Link> */}
                 </Paper>
             </div>
         ) 
@@ -100,7 +100,13 @@ class StartPage extends Component{
 
     sendInfoFTP_Res =  ipcRenderer.on("sendInfoFTP_Result", (event, arg) => {
         console.log("sendInfoFTP_Result")
-        this.setState({desabilitado: false})
+        console.log(arg.resposta)
+        if(arg.resposta == '203'){
+            this.setState({desabilitado: false}) 
+        }else{
+            this.setState({desabilitado: true}) 
+            alert("Host, usuário ou senha incorretos")
+        }
     })
 
 }

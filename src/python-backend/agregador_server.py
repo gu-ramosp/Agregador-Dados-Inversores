@@ -110,11 +110,8 @@ def fetchDataFTP(regex_string,data_inicio,data_fim):
     global ftp_params 
     dataframes_list = []
 
-
-    #TODO: pegar parametros FTP aqui
-
     try:
-        with ftputil.FTPHost(DEBUG_FTP_HOST, DEBUG_FTP_USER, DEBUG_FPT_PASSWORD) as host:
+        with ftputil.FTPHost(ftp_params.host, ftp_params.usuario, ftp_params.senha) as host:
             for path, dirs, files in host.walk(host.curdir):
                 for file in files:
                 # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
@@ -122,9 +119,18 @@ def fetchDataFTP(regex_string,data_inicio,data_fim):
                         try:
                             data_file = datetime.strptime(file[8:-4], '%y-%m-%d')
                             if(data_file > data_inicio and data_file < data_fim):
-                                dataframes_list.append(normalizeDataframes(os.path.join(path,file)))
-                        except:
-                            print(f"Erro ao ler arquivo:\n{file}\n\n\n")
+                                print("eb")
+                                host.download(host.path.join(path,file),file)  
+                                print("goi")
+                                # print(host.path.join(path,file))
+                                # try:
+                                df = pd.read_csv(host.path.join(path,file), encoding='utf8')
+                                print(df.head)
+                                # except Exception as e:
+                                #     print(e)                
+
+                        except Exception as e:
+                            print(e)
             complete_df = pd.concat(dataframes_list,ignore_index=True)
             print(complete_df.shape)
             print(complete_df.head())
@@ -135,23 +141,32 @@ def fetchDataFTP(regex_string,data_inicio,data_fim):
 
 
 def normalizeDataframes(file):
-    df = pd.read_csv(file, encoding='utf8')
-    if(len(df.columns) == 12):
-        df['lim'] = '100%'
-        df['fac'] =  1.00
-    return df
-
+    try:
+        df = pd.read_csv(file, encoding='utf8')
+        if(len(df.columns) == 12):
+            df['lim'] = '100%'
+            df['fac'] =  1.00
+        return df
+    except Exception as e:
+        print(e)
 
 
 class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
     def SendParamsFTP(self, request, context):
         global ftp_params
         global local_files_path 
-        print("Dentro SendParamsFTP")
         ftp_params = request
         local_files_path = None
+        print(ftp_params)
         response = agregador_pb2.simpleStringResponse()
-        response.resposta = "Chamou SendParamsFTP "
+        try:
+            with FTP(request.host,timeout=1) as ftp:
+                ftp.login(user=request.usuario, passwd=request.senha)
+                conn_res =  '203'
+        except Exception as e:
+            print(e)
+            conn_res = "erro"
+        response.resposta = conn_res
         print(ftp_params)
         return response
 
@@ -162,7 +177,6 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         print("Dentro SendDataPath")
         local_files_path = request.req
         ftp_params = None
-        print(request.req)
         print(request)
         response = agregador_pb2.simpleStringResponse()
         response.resposta = "Chamou SendDataPath "
@@ -171,10 +185,9 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
 
     def MakeAggregation(self, request, context):
         print("Fazendo agregações")
-
         print(request)
 
-        # # É, tá assim porque não sei como interar protobuffers e a documentação não ajuda
+        #FIXME:  É, tá assim porque não sei como interar protobuffers e a documentação não ajuda
         aggr_req_dict = {}
         aggr_req_dict['data_inicio'] = request.data_inicio
         aggr_req_dict['data_fim'] = request.data_fim
@@ -194,7 +207,7 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
 
         aggregations = _makeAgregation(aggr_req_dict)
 
-        # É, tá assim porque não sei como interar protobuffers e a documentação não ajuda (2)
+        #FIXME: É, tá assim porque não sei como interar protobuffers e a documentação não ajuda (2)
         response = agregador_pb2.Agregregation()
         response.data_inicio= aggregations['data_inicio']
         response.data_fim= aggregations['data_fim']
