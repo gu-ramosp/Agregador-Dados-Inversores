@@ -20,6 +20,7 @@ message infoFTP_Request{
     string porta = 2;
     string usuario = 3;
     string senha = 4;
+    string servidor_labens = 5;
 }
 
 

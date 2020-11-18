@@ -2,11 +2,10 @@ import React, {Component,useEffect} from 'react';
 import './startPage.css'
 const { ipcRenderer } = window.require("electron");
 import {Link} from 'react-router-dom'
-import { Button, Input } from '@material-ui/core';
+import { Button,Checkbox, Input } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-
 
 class StartPage extends Component{
 
@@ -17,7 +16,8 @@ class StartPage extends Component{
         host: '',
         porta: '21',
         usuario: '',
-        senha :'',  
+        senha :'',
+        servidor_labens: false  
     };
 
       
@@ -49,6 +49,11 @@ class StartPage extends Component{
                         <TextField style={{margin:"0.25em"}} className="inputF" label="Senha" 
                             variant="outlined"  onChange={this.handleChange('senha')} defaultValue={values.senha}  />
                     </form>
+                    <span>
+                        SERVIDOR DO LABENS ?
+                        <Checkbox defaultCheckedcolor="primary"  color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} name="servidor_labens" onChange={this.toggleCheck}/>
+                    </span>
+
                     <Button  onClick={this.mandaInfoFTP} variant="contained"  id="graficos-btn" color="primary">
                         Confirmar
                     </Button>
@@ -73,9 +78,14 @@ class StartPage extends Component{
 
     handleChange = input => e => {this.setState({[input]: e.target.value})}
 
+    toggleCheck = (e) =>{
+        this.setState({servidor_labens: !this.state.servidor_labens}) 
+        console.log(this.state)
+    }
+
     mandaInfoFTP = (e) =>{
-        const {host,porta,usuario,senha } = this.state
-        const values = {host,porta,usuario,senha }
+        const {host,porta,usuario,senha,servidor_labens} = this.state
+        const values = {host,porta,usuario,senha,servidor_labens }
 
         ipcRenderer.send("sendInfoFTP", values)
         console.log("mandando FPT info")        
