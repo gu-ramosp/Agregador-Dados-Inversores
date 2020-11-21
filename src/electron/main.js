@@ -5,11 +5,13 @@ const  grpc_client = require('./grpc-client')
 const  isDev = require("electron-is-dev")
 const  child = require('child_process');
 
+//TODO: Refatorar funções do IPC que usam o cliente GRPC para chamar funções direto
+//TODO: Substituir child.exec por child_spawn para o servidor em python fechar junto com a janela
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-line global-require
-if (require('electron-squirrel-startup')) { 
-  app.quit();
-}
+if (require('electron-squirrel-startup')) { app.quit();}
+
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -17,16 +19,16 @@ const createWindow = () => {
     height: 900,
     minHeight: 800,
     minWidth: 900,
-    webPreferences: {
-      nodeIntegration: true,
-    }
+    webPreferences: {nodeIntegration: true}
   })
-
   mainWindow.loadURL(isDev?"http://localhost:8080":__dirname+"/../react/dist/index.html")
 }
 
+console.log(__dirname)
+var exe_path = isDev?`${__dirname}/../python-backend/dist/agregador_server.exe`:`${__dirname}/../python-backend/dist/agregador_server.exe`
+console.log(exe_path)
 
-var exe_path =  __dirname + "/../python-backend/dist/agregador_server.exe"
+
 child.exec(exe_path, function(err, data) {
     if(err){
        console.error(err);
@@ -34,6 +36,7 @@ child.exec(exe_path, function(err, data) {
     }
     console.log(data.toString());
 });
+
 
 //TODO: esperar de forna sincrona
 ipcMain.on("getDirPath", (event,arg)=>{
@@ -45,10 +48,10 @@ ipcMain.on("getDirPath", (event,arg)=>{
   })
 })
 
+
 ipcMain.on("sendInfoFTP", (event, arg)=>{
   // var confirm = grpc_client.SendParamsFTP(arg)
   // event.reply('sendInfoFTP_Result', confirm )
-
   grpc_client.client.SendParamsFTP(arg, (err, response)=> {
     console.log('sendInfoFTP_cli:', response);
     console.log("Erro: " + err)
@@ -56,25 +59,18 @@ ipcMain.on("sendInfoFTP", (event, arg)=>{
   });
 })
 
-ipcMain.on("makeAggregation", (event, arg)=>{
 
+ipcMain.on("makeAggregation", (event, arg)=>{
   grpc_client.client.MakeAggregation(arg, (err, response)=> {
     console.log('MakeAggregation_cli:', response);
     console.log("Erro: " + err)
     event.reply('makeAggregation_Result', response )
-
   });
-
 })
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+
+
 app.on('ready', createWindow);
 
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -82,9 +78,8 @@ app.on('window-all-closed', () => {
   }
 });
 
+
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }

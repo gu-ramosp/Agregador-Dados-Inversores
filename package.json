@@ -1,8 +1,8 @@
 {
-  "name": "my-app",
-  "productName": "my-app",
+  "name": "agregador-app",
+  "productName": "agregador-app",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Agregador de dados provindos de inversores das usinas fotovoltaicas da utfpr",
   "main": "src/electron/main.js",
   "scripts": {
     "test": "webpack-dev-server --mode development --open",
