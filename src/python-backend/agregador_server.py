@@ -13,36 +13,37 @@ import ftputil
 
 ftp_params = None
 local_files_path = None
-DEBUG_FTP_HOST = '127.0.0.1'
-DEBUG_FTP_USER = 'Gustavo'
-DEBUG_FPT_PASSWORD = 'password'
 
-#TODO: Lógica de buscas de dados duplicada para FPT e Local. Optimizar
+# TODO: Lógica de buscas de dados duplicada para FPT e Local. Optimizar
+# TODO: Realizar Validação dos dados recebidos no front-end
+# TODO: Refatorar código para deixar mais modular
+# TODO: Verificar porque erro "421 Could not create socket" ocorre ao buscar alguns arquivos no FTP.
 
 def main():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     agregador_pb2_grpc.add_AggregationServicer_to_server(AggregationServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
-    print("(Versão 0.8) Servidor iniciado escutando na porta 50051")
+    print("(Versão 1.0) Servidor iniciado escutando na porta 50051\n")
     server.wait_for_termination()
 
 
 def _makeAgregation(aggr_request_data):
-    print("dentro _makeAgregation")
     regex_string, data_inicio, data_fim = makeRegexString(aggr_request_data)
     complete_df = fetchDataFTP(regex_string,data_inicio, data_fim) if ftp_params else fetchDataLocal(regex_string,data_inicio, data_fim)
     complete_df = complete_df.loc[complete_df["mod"] == 1]
+    print(f'\nDataset final apresenta o seguinte número de linhas e colunas respectivamente: {complete_df.shape}')
+    print(f'Amostra do dataset final:\n {complete_df.head()}')
 
+    print("\nIniciando Agregações")
     for key, value in aggr_request_data.items():
-        print(f'key: {key}, value:  {value}')
         if value!="" and (key=="whs" or key== "ene"):
             valor_final = complete_df.loc[complete_df["timestamp_iso"] == complete_df.timestamp_iso.max()][key].values[0]
             valor_inicial = complete_df.loc[complete_df["timestamp_iso"] == complete_df.timestamp_iso.min()][key].values[0]
             valor_total = valor_final - valor_inicial
             aggr_request_data[key] = str(valor_total)
         elif(value!="" and (key in complete_df.columns) ):
-            print(f'key: {key}, value:  {value}\n')
+            print(f'Realizando agregação {value} da variável {key}')
             if(value=="mean"):
                 aggr_request_data[key] = str( complete_df[key].mean())
             elif(value=="median"):
@@ -53,9 +54,8 @@ def _makeAgregation(aggr_request_data):
                 aggr_request_data[key] = str( complete_df[key].max())
             else:
                 aggr_request_data[key] = str( complete_df[key].min())
-            print(value)
 
-    print(aggr_request_data)
+    print(f'\nResultado das agregações: {aggr_request_data}\n')
     return aggr_request_data
 
 
@@ -75,12 +75,12 @@ def makeRegexString(aggr_request_data):
         pattern = re.compile(r'\w\w-'+ f'({string_CDTE}|{string_CIGS}|{string_MONO}|{string_POLI})'+ r'-\d\d-\d\d-\d\d')
     else:
         pattern = re.compile(f'{cidade}-'+ f'({string_CDTE}|{string_CIGS}|{string_MONO}|{string_POLI})' + r'-\d\d-\d\d-\d\d')
-    print(pattern)
+
     return pattern, data_inicio, data_fim
 
 
 def fetchDataLocal(regex_string,data_inicio,data_fim):
-    print('fetchDataLocal')
+    print('Fazendo busca dos arquivos na máquina local:')
     global local_files_path
     dataframes_list = []
 
@@ -95,23 +95,24 @@ def fetchDataLocal(regex_string,data_inicio,data_fim):
                         if(data_file > data_inicio and data_file < data_fim):
                             dataframes_list.append(normalizeDataframes(os.path.join(path,file)))
                     except:
-                        print(f"Erro ao ler arquivo:\n{file}\n\n\n")
+                        print(f"Erro ao ler arquivo:\n{file}\nNome do arquivo diferente do padrão especificado pelo regex")
+
         complete_df = pd.concat(dataframes_list,ignore_index=True)
-        print(complete_df.shape)
-        print(complete_df.head())
         return complete_df
+    
     except Exception as e:
-        print(f"erro:{e}")
         return ("Ocorreu um ero ao buscar arquivos para agregação.\nVerifique se o diretório realmente contém os arquivos.\nErro: {e}")
     
 
 def fetchDataFTP(regex_string,data_inicio,data_fim):
-    print('fetchDataFTP')
+    print('Fazendo busca dos arquivos em um Servidor FTP:')
     global ftp_params 
     dataframes_list = []
 
     try:
-        with ftputil.FTPHost(ftp_params.host, ftp_params.usuario, ftp_params.senha) as host:
+        with ftputil.FTPHost(ftp_params.host, ftp_params.usuario, ftp_params.senha, ftp_params.porta) as host:
+            if(ftp_params.servidor_labens == "true"):
+                host.chdir('importados')
             for path, dirs, files in host.walk(host.curdir):
                 for file in files:
                 # Filtra apenas diretórios que satisfazem parâmetros de busca, adicionando-os em um dataframe
@@ -122,14 +123,15 @@ def fetchDataFTP(regex_string,data_inicio,data_fim):
                                 with host.open(host.path.join(path,file), "r", encoding="utf8") as remote_file:
                                     dataframes_list.append(normalizeDataframes(remote_file))
                         except Exception as e:
-                            print(e)
+                            print(f"Erro ao ler arquivo:\n{file}\n{e}")
+                            pass
+
             complete_df = pd.concat(dataframes_list,ignore_index=True)
-            print(complete_df.shape)
-            print(complete_df.head())
             return complete_df
+
     except Exception as e:
-            print(f"erro:{e}")
-            return ("Ocorreu um ero ao buscar arquivos para agregação.\nVerifique se o diretório realmente contém os arquivos.\nErro: {e}")
+            print(f"Erro em fetchDataFTP: {e}")
+            # return ("Ocorreu um ero ao buscar arquivos para agregação.\nVerifique se o diretório realmente contém os arquivos.\nErro: {e}")
 
 
 def normalizeDataframes(file):
@@ -149,7 +151,7 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         global local_files_path 
         ftp_params = request
         local_files_path = None
-        print(ftp_params)
+        print(f'Recebeu parâmetros para conexão com servidor FTP:\n{ftp_params}')
         response = agregador_pb2.simpleStringResponse()
         try:
             with FTP(request.host,timeout=1) as ftp:
@@ -159,25 +161,23 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
             print(e)
             conn_res = "erro"
         response.resposta = conn_res
-        print(ftp_params)
         return response
 
 
+    #TODO: Mudar nome da função para setDataPath (Faz mais sentido ao ver a função nesse script)
     def SendDataPath(self, request, context):
         global ftp_params
         global local_files_path 
-        print("Dentro SendDataPath")
         local_files_path = request.req
         ftp_params = None
-        print(request)
+        print(f"Recebeu Path dos arquivos a serem agregados: {local_files_path}\n")
         response = agregador_pb2.simpleStringResponse()
         response.resposta = "Chamou SendDataPath "
         return response
     
 
     def MakeAggregation(self, request, context):
-        print("Fazendo agregações")
-        print(request)
+        print(f"Fazendo agregações com os seguintes parâmetros:\n{request}")
 
         #FIXME:  É, tá assim porque não sei como interar protobuffers e a documentação não ajuda
         aggr_req_dict = {}
@@ -213,7 +213,7 @@ class AggregationServicer(agregador_pb2_grpc.AggregationServicer):
         response.ene = aggregations['ene']
         response.whs = aggregations['whs']
 
-        print("finalizou request")
+        print("Execução da requisição encerrada")
         return response
 
 

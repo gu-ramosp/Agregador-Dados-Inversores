@@ -97,3 +97,4 @@ out/
 src/react/dist/index.html
 src/react/dist/index_bundle.js
 src/python-backend/agregador_server.spec
+src/tests/test_labens_FTP.py
