@@ -1,9 +1,9 @@
 syntax = "proto3";
 
 service Aggregation {
-    rpc SendDataPath(simpleStringRequest) returns (simpleStringResponse);
-    rpc SendParamsFTP(infoFTP_Request) returns (simpleStringResponse);
-    rpc MakeAggregation(Agregregation) returns (Agregregation);
+    rpc SendDataPath(simpleStringRequest)  returns (simpleStringResponse);
+    rpc SendParamsFTP(infoFTP_Request)     returns (simpleStringResponse);
+    rpc MakeAggregation(Agregregation)     returns (Agregregation);
     rpc sendGraphData(simpleStringRequest) returns (simpleStringRequest);
 }
 
@@ -16,31 +16,31 @@ message simpleStringResponse{
 }
 
 message infoFTP_Request{
-    string host = 1;
-    string porta = 2;
-    string usuario = 3;
-    string senha = 4;
+    string host            = 1;
+    string porta           = 2;
+    string usuario         = 3;
+    string senha           = 4;
     string servidor_labens = 5;
 }
 
 
 message Agregregation{
-    string data_inicio  = 1;
-    string data_fim =     2;
-    string cidade =       3;
-    string vdc  =         4;
-    string idc =          5;
-    string vac =          6;
-    string iac =          7;
-    string freq =         8;
-    string pac =          9;
-    string ene =          10;
-    string whs =          11;
-    bool CDTE =           12;
-    bool CIGS =           13;
-    bool MONO =           14;
-    bool POLI =           15;
-
+    string data_inicio =  1;
+    string data_fim    =  2;
+    string cidade      =  3;
+    string vdc         =  4;
+    string idc         =  5;
+    string vac         =  6;
+    string iac         =  7;
+    string freq        =  8;
+    string pac         =  9;
+    string ene         = 10;
+    string whs         = 11;
+    bool   CDTE        = 12;
+    bool   CIGS        = 13;
+    bool   MONO        = 14;
+    bool   POLI        = 15;
+    bool   erro        = 16;
 }
 
 

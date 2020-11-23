@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0f\x61gregador.proto\"\"\n\x13simpleStringRequest\x12\x0b\n\x03req\x18\x01 \x01(\t\"(\n\x14simpleStringResponse\x12\x10\n\x08resposta\x18\x01 \x01(\t\"g\n\x0finfoFTP_Request\x12\x0c\n\x04host\x18\x01 \x01(\t\x12\r\n\x05porta\x18\x02 \x01(\t\x12\x0f\n\x07usuario\x18\x03 \x01(\t\x12\r\n\x05senha\x18\x04 \x01(\t\x12\x17\n\x0fservidor_labens\x18\x05 \x01(\t\"\xe7\x01\n\rAgregregation\x12\x13\n\x0b\x64\x61ta_inicio\x18\x01 \x01(\t\x12\x10\n\x08\x64\x61ta_fim\x18\x02 \x01(\t\x12\x0e\n\x06\x63idade\x18\x03 \x01(\t\x12\x0b\n\x03vdc\x18\x04 \x01(\t\x12\x0b\n\x03idc\x18\x05 \x01(\t\x12\x0b\n\x03vac\x18\x06 \x01(\t\x12\x0b\n\x03iac\x18\x07 \x01(\t\x12\x0c\n\x04\x66req\x18\x08 \x01(\t\x12\x0b\n\x03pac\x18\t \x01(\t\x12\x0b\n\x03\x65ne\x18\n \x01(\t\x12\x0b\n\x03whs\x18\x0b \x01(\t\x12\x0c\n\x04\x43\x44TE\x18\x0c \x01(\x08\x12\x0c\n\x04\x43IGS\x18\r \x01(\x08\x12\x0c\n\x04MONO\x18\x0e \x01(\x08\x12\x0c\n\x04POLI\x18\x0f \x01(\x08\x32\xf4\x01\n\x0b\x41ggregation\x12;\n\x0cSendDataPath\x12\x14.simpleStringRequest\x1a\x15.simpleStringResponse\x12\x38\n\rSendParamsFTP\x12\x10.infoFTP_Request\x1a\x15.simpleStringResponse\x12\x31\n\x0fMakeAggregation\x12\x0e.Agregregation\x1a\x0e.Agregregation\x12;\n\rsendGraphData\x12\x14.simpleStringRequest\x1a\x14.simpleStringRequestb\x06proto3'
+  serialized_pb=b'\n\x0f\x61gregador.proto\"\"\n\x13simpleStringRequest\x12\x0b\n\x03req\x18\x01 \x01(\t\"(\n\x14simpleStringResponse\x12\x10\n\x08resposta\x18\x01 \x01(\t\"g\n\x0finfoFTP_Request\x12\x0c\n\x04host\x18\x01 \x01(\t\x12\r\n\x05porta\x18\x02 \x01(\t\x12\x0f\n\x07usuario\x18\x03 \x01(\t\x12\r\n\x05senha\x18\x04 \x01(\t\x12\x17\n\x0fservidor_labens\x18\x05 \x01(\t\"\xf5\x01\n\rAgregregation\x12\x13\n\x0b\x64\x61ta_inicio\x18\x01 \x01(\t\x12\x10\n\x08\x64\x61ta_fim\x18\x02 \x01(\t\x12\x0e\n\x06\x63idade\x18\x03 \x01(\t\x12\x0b\n\x03vdc\x18\x04 \x01(\t\x12\x0b\n\x03idc\x18\x05 \x01(\t\x12\x0b\n\x03vac\x18\x06 \x01(\t\x12\x0b\n\x03iac\x18\x07 \x01(\t\x12\x0c\n\x04\x66req\x18\x08 \x01(\t\x12\x0b\n\x03pac\x18\t \x01(\t\x12\x0b\n\x03\x65ne\x18\n \x01(\t\x12\x0b\n\x03whs\x18\x0b \x01(\t\x12\x0c\n\x04\x43\x44TE\x18\x0c \x01(\x08\x12\x0c\n\x04\x43IGS\x18\r \x01(\x08\x12\x0c\n\x04MONO\x18\x0e \x01(\x08\x12\x0c\n\x04POLI\x18\x0f \x01(\x08\x12\x0c\n\x04\x65rro\x18\x10 \x01(\x08\x32\xf4\x01\n\x0b\x41ggregation\x12;\n\x0cSendDataPath\x12\x14.simpleStringRequest\x1a\x15.simpleStringResponse\x12\x38\n\rSendParamsFTP\x12\x10.infoFTP_Request\x1a\x15.simpleStringResponse\x12\x31\n\x0fMakeAggregation\x12\x0e.Agregregation\x1a\x0e.Agregregation\x12;\n\rsendGraphData\x12\x14.simpleStringRequest\x1a\x14.simpleStringRequestb\x06proto3'
 )
 
 
@@ -262,6 +262,13 @@ _AGREGREGATION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='erro', full_name='Agregregation.erro', index=15,
+      number=16, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -275,7 +282,7 @@ _AGREGREGATION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=203,
-  serialized_end=434,
+  serialized_end=448,
 )
 
 DESCRIPTOR.message_types_by_name['simpleStringRequest'] = _SIMPLESTRINGREQUEST
@@ -321,8 +328,8 @@ _AGGREGATION = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=437,
-  serialized_end=681,
+  serialized_start=451,
+  serialized_end=695,
   methods=[
   _descriptor.MethodDescriptor(
     name='SendDataPath',

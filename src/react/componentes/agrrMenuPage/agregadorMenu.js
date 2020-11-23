@@ -25,7 +25,7 @@ class AgregadorMenu extends Component{
         CDTE: false,
         CIGS: false,
         MONO: false,
-        POLI: false
+        POLI: false,
     }
     
     render(){

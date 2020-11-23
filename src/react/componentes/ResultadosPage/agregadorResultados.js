@@ -40,45 +40,69 @@ class AgregadorResultados extends Component{
             ) 
         }
         else{
-            return (
-                <div className="result-body" >
-    
-                    <AppBar id="header" style={{height:"10%"}}>
-                        <h2> Resultados das Agregações</h2>
-                    </AppBar>
-
-                    <TableContainer id="tabela-result" style={{marginTop:"10%"}} component={Paper}>
-                        <Table  aria-label="simple table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell align="center"> Variável Agregada</TableCell>
-                                <TableCell align="center">Resultado da agregação</TableCell>
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            {Object.entries(this.state.resultados).map((key) => (
-                                <TableRow key={key[0]}>
-                                <TableCell  align="center" component="th" scope="row">
-                                    {key[0]}
-                                </TableCell>
-                                <TableCell align="center">{key[1]}</TableCell>
-                                </TableRow>
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-                    <Paper id="aggr-footer" elevation={24}>
-                        <Link to="/menu">
-                            <Button variant="contained"  id="graficos-btn" color="primary">
-                                Voltar
-                            </Button>
-                        </Link>
-                    </Paper>
+            if(this.state.erro==true){
+                return (
+                    <div className="result-body" >
         
-            </div>
+                        <AppBar id="header" style={{height:"10%"}}>
+                            <h2> Resultados das Agregações</h2>
+                        </AppBar>
+    
+                        <h2 className="error_msg">Ocorreu um erro  no processo de agregação</h2>
+                        <h3 className="error_msg2">Verifique se o diretório escolhido ralmente contém os dados para agregação ou se algum parâmetro obrigatório não foi preenchido corretamente</h3>
 
-            )
+                        <Paper id="aggr-footer" elevation={24}>
+                            <Link to="/menu">
+                                <Button variant="contained"  id="graficos-btn" color="primary">
+                                    Voltar
+                                </Button>
+                            </Link>
+                        </Paper>
+
+                    </div>
+                )
+            }
+            else{
+                return (
+                    <div className="result-body" >
+        
+                        <AppBar id="header" style={{height:"10%"}}>
+                            <h2> Resultados das Agregações</h2>
+                        </AppBar>
+    
+                        <TableContainer id="tabela-result" style={{marginTop:"10%"}} component={Paper}>
+                            <Table  aria-label="simple table">
+                                <TableHead>
+                                <TableRow>
+                                    <TableCell align="center"> Variável Agregada</TableCell>
+                                    <TableCell align="center">Resultado da agregação</TableCell>
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {Object.entries(this.state.resultados).map((key) => (
+                                    <TableRow key={key[0]}>
+                                    <TableCell  align="center" component="th" scope="row">
+                                        {key[0]}
+                                    </TableCell>
+                                    <TableCell align="center">{key[1]}</TableCell>
+                                    </TableRow>
+                                ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+    
+                        <Paper id="aggr-footer" elevation={24}>
+                            <Link to="/menu">
+                                <Button variant="contained"  id="graficos-btn" color="primary">
+                                    Voltar
+                                </Button>
+                            </Link>
+                        </Paper>
+
+                    </div>
+                )
+            }
+         
         }
         
     }
@@ -99,7 +123,7 @@ class AgregadorResultados extends Component{
         delete arg.data_fim;
         delete arg.cidade;
 
-        
+        console.log(arg['erro'])
 
         var excluir = new Array();
         for (const [key, value] of Object.entries(arg)) {
@@ -155,6 +179,7 @@ class AgregadorResultados extends Component{
         })
         console.log(arg)
         this.setState({resultados: arg})
+        this.setState({erro: arg['erro']})
 
     })
 
