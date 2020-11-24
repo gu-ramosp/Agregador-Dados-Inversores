@@ -11,6 +11,7 @@ var packageDefinition = protoLoader.loadSync(
      oneofs: true
     });
 
+    
 var hello_proto = grpc.loadPackageDefinition(packageDefinition);
 var client = new hello_proto.Aggregation('localhost:50051', grpc.credentials.createInsecure());
 
@@ -22,8 +23,7 @@ function SendDataPath(request){
     console.log('SendDataPath_cli:', response);
     this.response = response
   });
-  
-  console.log('Essa merda é assincrona mesmo')
+
   return  this.response
 }
 
@@ -39,8 +39,6 @@ function SendParamsFTP(request){
 }
 
 
-module.exports.SendDataPath = SendDataPath;
-module.exports.SendParamsFTP = SendParamsFTP;
 module.exports.client = client;
 
 
