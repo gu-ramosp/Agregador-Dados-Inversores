@@ -29,10 +29,14 @@ child.spawn(exe_path, [], { shell: true })
 
 ipcMain.on("getDirPath", (event,arg)=>{
   dialog.showOpenDialog({ properties: ['openDirectory'] }).then(result=>{
-    console.log(result.filePaths[0].toString())
+
     var path = result.filePaths[0].toString()
-    grpc_client.client.SendDataPath(path)
-    event.reply('SendDataPat_Result',result )
+    console.log("Request sendo enviada", path)
+
+    grpc_client.client.SendDataPath({req: path}, (err, response)=> {
+      console.log('SendDataPath_response', response);
+      event.reply('SendDataPath_Result',response )
+    });
   })
 })
 
@@ -58,7 +62,7 @@ ipcMain.on("makeAggregation", (event, arg)=>{
         erro: true
       }
     }
-    event.reply('makeAggregation_Result', response )
+    event.reply('MakeAggregation_Result', response )
   });
 })
 

@@ -112,7 +112,7 @@ class AgregadorResultados extends Component{
         this.setState({mudado:"dsfd",outro:"sdflj", teste:"lol"})
     }
 
-    aggr_results = ipcRenderer.on("makeAggregation_Result", (event, arg) => {
+    aggr_results = ipcRenderer.on("MakeAggregation_Result", (event, arg) => {
         console.log("o que eu quero")
         console.log(arg)
         delete arg.CDTE;

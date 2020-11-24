@@ -102,13 +102,13 @@ class StartPage extends Component{
         console.log(this.state)
     }
 
-   dirPath_Res =  ipcRenderer.on("dirPathResult", (event, arg) => {
+   dirPath_Res =  ipcRenderer.on("SendDataPath_Result", (event, arg) => {
         console.log("\nResultado do python dataPath")
         console.log(arg)
         this.setState({desabilitado: false})
     })
 
-    sendInfoFTP_Res =  ipcRenderer.on("sendInfoFTP_Result", (event, arg) => {
+    sendInfoFTP_Res =  ipcRenderer.on("SendInfoFTP_Result", (event, arg) => {
         console.log("sendInfoFTP_Result")
         console.log(arg.resposta)
         if(arg.resposta == '203'){
